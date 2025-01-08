@@ -13,10 +13,10 @@ export async function loader({ params }: Route.LoaderArgs) {
 export default function PostDetail({ loaderData }: { loaderData: { post: Post } }) {
   const { post } = loaderData;
   return (
-    <main className="container mx-auto">
-      <h1 className="text-6xl py-10">{post.caption}</h1>
+    <main className="container mx-auto px-5">
+      <h1 className="text-6xl py-10 text-offWhite">{post.caption}</h1>
       <img src={post.image} alt={post.caption} className="w-full rounded-lg" />
-      <p className="py-5 text-xl">{new Date(post.createdAt).toLocaleString()}</p>
+      <p className="py-5 text-xl">{new Date(post.createdAt).toLocaleDateString()}</p>
     </main>
   );
 }

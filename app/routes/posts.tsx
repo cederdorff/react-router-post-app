@@ -18,9 +18,9 @@ export async function loader(): Promise<{ posts: Post[] }> {
 export default function Posts({ loaderData }: Route.ComponentProps) {
   const { posts } = loaderData;
   return (
-    <main className="container mx-auto">
-      <h1 className="text-6xl py-10">Posts Page</h1>
-      <section className="grid grid-cols-3 gap-6">
+    <main className="container mx-auto px-5">
+      <h1 className="text-6xl py-10 text-offWhite">Posts Page</h1>
+      <section className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-6">
         {posts.map(post => (
           <CardPost key={post.id} post={post} />
         ))}

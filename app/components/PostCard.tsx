@@ -7,18 +7,14 @@ interface PostCardProps {
 
 export default function PostCard({ post }: PostCardProps) {
   return (
-    <article
-      key={post.id}
-      className="bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+    <article key={post.id} className="bg-offWhite rounded-lg shadow-lg">
       <img
         src={post.image}
         alt={post.caption}
         className="rounded-t-lg object-cover h-48 w-full"
       />
       <div className="p-5">
-        <h3 className="mb-2 text-xl font-bold tracking-tight text-gray-900 dark:text-white">
-          {post.caption}
-        </h3>
+        <h3 className="mb-2 text-xl font-bold text-darkTeal">{post.caption}</h3>
         <ButtonLink href={`/posts/${post.id}`} />
       </div>
     </article>
