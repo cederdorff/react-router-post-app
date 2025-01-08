@@ -1,11 +1,8 @@
+import type { Post } from "~/types";
 import ButtonLink from "./ButtonLink";
 
 interface PostCardProps {
-  post: {
-    id: string;
-    image: string;
-    caption: string;
-  };
+  post: Post;
 }
 
 export default function PostCard({ post }: PostCardProps) {

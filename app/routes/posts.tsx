@@ -1,12 +1,13 @@
 import CardPost from "~/components/PostCard";
 import type { Route } from "./+types/posts";
+import type { Post } from "~/types";
 
-export async function loader() {
+export async function loader(): Promise<{ posts: Post[] }> {
   const response = await fetch(
     "https://react-router-post-app-default-rtdb.europe-west1.firebasedatabase.app/posts.json"
   );
   const data = await response.json();
-  const posts = Object.keys(data).map(key => ({
+  const posts: Post[] = Object.keys(data).map(key => ({
     id: key,
     ...data[key]
   }));
