@@ -1,26 +1,21 @@
-import mongoose from "mongoose";
+import { Schema, model, Types, type InferSchemaType } from "mongoose";
 
-export interface PostType {
-  _id: mongoose.Schema.Types.ObjectId;
-  caption: string;
-  image: string;
-  user: mongoose.Schema.Types.ObjectId | any; // Can be ObjectId or populated User
-  likes: number;
-  tags: string[];
-  createdAt: Date;
-  updatedAt: Date;
-}
-
-const postSchema = new mongoose.Schema<PostType>(
+// Define the schema
+const postSchema = new Schema(
   {
     caption: { type: String, required: true },
     image: { type: String, required: true },
-    user: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true }, // Reference to User model
+    user: { type: Types.ObjectId, ref: "User", required: true }, // Reference to User model
     likes: { type: Number, default: 0 },
     tags: { type: [String], default: [] }
   },
   { timestamps: true }
 );
 
-const Post = mongoose.model<PostType>("Post", postSchema);
+// Infer the type and extend it with `_id`
+export type PostType = InferSchemaType<typeof postSchema> & { _id: Types.ObjectId };
+
+// Create the model
+const Post = model<PostType>("Post", postSchema);
+
 export default Post;

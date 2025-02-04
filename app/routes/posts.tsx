@@ -1,7 +1,7 @@
 import { Link } from "react-router";
+import PostCard from "~/components/PostCard";
 import Post, { type PostType } from "~/models/Post";
 import type { Route } from "./+types/posts";
-import PostCard from "~/components/PostCard";
 
 export function meta({}: Route.MetaArgs) {
   return [
@@ -11,19 +11,17 @@ export function meta({}: Route.MetaArgs) {
 }
 
 export async function loader({ request }: Route.LoaderArgs) {
-  const posts: PostType[] = await Post.find().populate("user").lean(); // Use .lean() to return plain JavaScript objects
-
-  return { posts };
+  const posts: PostType[] = await Post.find().populate("user");
+  return Response.json({ posts });
 }
 
-export default function PostsPage({ loaderData }: Route.ComponentProps) {
+export default function PostsPage({ loaderData }: { loaderData: { posts: PostType[] } }) {
   const { posts } = loaderData;
-  console.log(posts);
 
   return (
     <section className="grid">
       {posts.map(post => (
-        <Link key={post._id.toString()} className="post-link" to={`${post._id.toString()}`}>
+        <Link key={post._id.toString()} className="post-link" to={`/posts/${post._id}`}>
           <PostCard post={post} />
         </Link>
       ))}
