@@ -3,7 +3,7 @@ import { isRouteErrorResponse, Links, Meta, Outlet, Scripts, ScrollRestoration }
 import type { Route } from "./+types/root";
 import "./app.css";
 import connectDb from "./config/database";
-import User from "./models/User";
+import seedDatabase from "./config/seedDatabase";
 
 export const links: Route.LinksFunction = () => [
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
@@ -19,7 +19,7 @@ export const links: Route.LinksFunction = () => [
 ];
 
 connectDb();
-User.create({ name: "Alice", mail: "alice@mail.dk" });
+seedDatabase();
 
 export function Layout({ children }: { children: React.ReactNode }) {
   return (

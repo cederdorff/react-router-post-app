@@ -14,6 +14,12 @@ if (!MONGODB_URL) {
 // connection to avoid creating multiple connections in dev mode when Remix
 // "purges the require cache" when reloading on file changes.
 export default function connectDb() {
+  if (NODE_ENV === "development") {
+    // In development mode, we want to overwrite any existing models to ensure
+    // we pick up any changes made in schemas.
+    mongoose.set("overwriteModels", true);
+  }
+
   // Reuse the existing Mongoose connection if we have one...
   // https://mongoosejs.com/docs/api/connection.html#connection_Connection-readyState
   const readyState = mongoose.connection.readyState;
