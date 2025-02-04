@@ -33,8 +33,7 @@ async function insertData() {
     name: "Maria Louise Bendixen",
     title: "Senior Lecturer",
     educations: ["Multimedia Design"],
-    password: "1234",
-    car: "Audi A3"
+    password: "1234"
   });
 
   const rasmus = await User.create({
