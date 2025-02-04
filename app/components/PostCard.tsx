@@ -1,6 +1,7 @@
 import UserAvatar from "./UserAvatar";
+import type { PostType } from "~/models/Post";
 
-export default function PostCard({ post }) {
+export default function PostCard({ post }: { post: PostType }) {
   return (
     <article className="post-card">
       <UserAvatar user={post.user} />

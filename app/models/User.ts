@@ -10,7 +10,8 @@ const userSchema = new mongoose.Schema(
     },
     name: String,
     title: String,
-    educations: [String]
+    educations: [String],
+    car: String
   },
   { timestamps: true }
 );

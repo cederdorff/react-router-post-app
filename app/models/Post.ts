@@ -1,18 +1,26 @@
 import mongoose from "mongoose";
 
-const postSchema = new mongoose.Schema(
+export interface PostType {
+  _id: mongoose.Schema.Types.ObjectId;
+  caption: string;
+  image: string;
+  user: mongoose.Schema.Types.ObjectId | any; // Can be ObjectId or populated User
+  likes: number;
+  tags: string[];
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+const postSchema = new mongoose.Schema<PostType>(
   {
-    caption: String,
-    image: String,
-    user: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "User"
-    },
-    likes: Number,
-    tags: [String]
+    caption: { type: String, required: true },
+    image: { type: String, required: true },
+    user: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true }, // Reference to User model
+    likes: { type: Number, default: 0 },
+    tags: { type: [String], default: [] }
   },
   { timestamps: true }
 );
 
-const Post = mongoose.model("Post", postSchema);
+const Post = mongoose.model<PostType>("Post", postSchema);
 export default Post;
