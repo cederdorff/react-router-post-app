@@ -5,7 +5,7 @@ const postSchema = new Schema(
   {
     caption: { type: String, required: true },
     image: { type: String, required: true },
-    user: { type: Types.ObjectId, ref: "User", required: true }, // Reference to User model
+    user: { type: Types.ObjectId, ref: "User", required: true },
     likes: { type: Number, default: 0 },
     tags: { type: [String], default: [] }
   },
