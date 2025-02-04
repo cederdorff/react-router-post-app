@@ -1,5 +1,6 @@
 import type { Route } from "./+types/posts";
 import { Welcome } from "../welcome/welcome";
+import Post from "~/models/Post";
 
 export function meta({}: Route.MetaArgs) {
   return [
@@ -8,6 +9,15 @@ export function meta({}: Route.MetaArgs) {
   ];
 }
 
-export default function PostsPage() {
+export async function loader({ request }: Route.LoaderArgs) {
+  const posts = await Post.find().populate("user").sort({ createdAt: -1 }).lean();
+
+  return { posts };
+}
+
+export default function PostsPage({ loaderData }: Route.ComponentProps) {
+  const { posts } = loaderData;
+  console.log(posts);
+
   return <Welcome />;
 }
