@@ -1,6 +1,6 @@
 import { Schema, model, Types, type InferSchemaType } from "mongoose";
 
-// Define the schema
+// Define the schema for the Post collection in MongoDB
 const postSchema = new Schema(
   {
     caption: { type: String, required: true },
