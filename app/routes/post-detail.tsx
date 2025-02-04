@@ -10,7 +10,8 @@ export function meta({ data }: { data: { post: PostType } }) {
 
 export async function loader({ request, params }: Route.LoaderArgs) {
   // Load the post and the user who created it
-  const post = await mongoose.models.Post.findById(params.id).populate("user");
+  const post: PostType = await mongoose.models.Post.findById(params.id).populate("user");
+
   return Response.json({ post });
 }
 
