@@ -1,3 +1,4 @@
+import { Types } from "mongoose";
 import Post from "~/models/Post";
 import User from "~/models/User";
 
@@ -37,6 +38,7 @@ async function insertData() {
   });
 
   const rasmus = await User.create({
+    _id: new Types.ObjectId("65cde4cb0d09cb615a23db17"),
     image: "https://share.cederdorff.dk/images/race.webp",
     mail: "race@eaaa.dk",
     name: "Rasmus Cederdorff",

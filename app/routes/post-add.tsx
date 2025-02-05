@@ -56,7 +56,7 @@ export async function action({ request }: Route.ActionArgs) {
   // Extract and typecast values correctly
   const caption = formData.get("caption");
   const image = formData.get("image");
-  const user = "67a2392d97a9919cc4e1fe45"; // Should ideally come from authentication context
+  const user = "65cde4cb0d09cb615a23db17"; // RACE._id (hardcoded) - Should ideally come from authentication context
 
   // Create the post and ensure it's awaited
   await Post.create({
