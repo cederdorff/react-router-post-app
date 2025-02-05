@@ -10,7 +10,7 @@ export function meta({}: Route.MetaArgs) {
   ];
 }
 
-export async function loader({ request }: Route.LoaderArgs) {
+export async function loader() {
   const posts: PostType[] = await Post.find().populate("user");
   return Response.json({ posts });
 }
