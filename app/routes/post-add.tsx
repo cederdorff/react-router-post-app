@@ -30,10 +30,10 @@ export default function AddPostPage() {
           <img
             id="image-preview"
             className="image-preview"
-            src={image ? image : "https://placehold.co/600x400?text=Paste+an+image+URL"}
+            src={image || "https://placehold.co/600x400?text=Paste+an+image+URL"}
             alt="Choose"
             onError={e => {
-              const target = e.target as HTMLImageElement;
+              const target = e.currentTarget as HTMLImageElement;
               target.src = "https://placehold.co/600x400?text=Error+loading+image";
             }}
           />
