@@ -7,6 +7,7 @@ export const meta = () => {
   return [{ title: "React Router Post App 🚀 - Add New Post" }];
 };
 
+// React component
 export default function AddPostPage() {
   const [image, setImage] = useState("https://placehold.co/600x400?text=Add+your+amazing+image");
   const navigate = useNavigate();
@@ -50,6 +51,7 @@ export default function AddPostPage() {
   );
 }
 
+// Server-side action
 export async function action({ request }: Route.ActionArgs) {
   const formData = await request.formData();
 

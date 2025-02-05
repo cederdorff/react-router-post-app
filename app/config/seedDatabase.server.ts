@@ -84,7 +84,7 @@ async function insertData() {
         "https://images.unsplash.com/photo-1566241832378-917a0f30db2c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80",
       likes: 101,
       user: maria._id,
-      tags: ["beach", "sunset", "nature", "Aarhus"]
+      tags: ["beach", "sunset", "nature", "aarhus"]
     },
     {
       caption: "Exploring the city streets of Aarhus",
@@ -92,7 +92,7 @@ async function insertData() {
         "https://images.unsplash.com/photo-1559070169-a3077159ee16?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1pYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80",
       likes: 33,
       user: rasmus._id,
-      tags: ["city", "Aarhus", "exploration"]
+      tags: ["city", "aarhus", "exploration"]
     },
     {
       caption: "Delicious food at the restaurant",
@@ -108,7 +108,7 @@ async function insertData() {
         "https://images.unsplash.com/photo-1612624629424-ddde915d3dc5?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1pYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80",
       likes: 97,
       user: rasmus._id,
-      tags: ["city", "Aarhus", "exploration", "cityhall"]
+      tags: ["city", "aarhus", "exploration", "cityhall"]
     },
     {
       caption: "A cozy morning with coffee",
@@ -132,7 +132,7 @@ async function insertData() {
         "https://images.unsplash.com/photo-1573997953524-efed43db70a0?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1pYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80",
       likes: 99,
       user: maria._id,
-      tags: ["morning", "Aarhus", "beautiful", "AROS"]
+      tags: ["morning", "aarhus", "beautiful", "AROS"]
     },
     {
       caption: "Rainbow reflections of the city of Aarhus",
@@ -140,7 +140,7 @@ async function insertData() {
         "https://images.unsplash.com/photo-1558443336-dbb3de50b8b2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1pYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80",
       likes: 589,
       user: anne._id,
-      tags: ["city", "Aarhus", "rainbow", "AROS"]
+      tags: ["city", "aarhus", "rainbow", "AROS"]
     },
     {
       caption: "The city streets of Aarhus ✨",
@@ -148,7 +148,7 @@ async function insertData() {
         "https://images.unsplash.com/photo-1596150368199-1dddc9fc34cc?q=80&w=500&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
       likes: 201,
       user: rasmus._id,
-      tags: ["city", "Aarhus", "streets"]
+      tags: ["city", "aarhus", "streets"]
     }
   ]);
 }

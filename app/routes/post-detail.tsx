@@ -7,13 +7,14 @@ export function meta({ data }: { data: { post: PostType } }) {
   return [{ title: data.post.caption }];
 }
 
+// Server-side loader function
 export async function loader({ request, params }: Route.LoaderArgs) {
   // Load the post and the user who created it
   const post = await Post.findById(params.id).populate("user");
-
-  return Response.json({ post });
+  return Response.json({ post }); // Return the post and user data
 }
 
+// React component
 export default function PostDetailPage({ loaderData }: { loaderData: { post: PostType } }) {
   const { post } = loaderData;
 

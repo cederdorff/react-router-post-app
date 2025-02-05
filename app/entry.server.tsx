@@ -10,7 +10,7 @@ import connectDb from "./config/database.server";
 import seedDatabase from "./config/seedDatabase.server";
 
 connectDb();
-seedDatabase();
+await seedDatabase();
 
 export const streamTimeout = 5_000;
 

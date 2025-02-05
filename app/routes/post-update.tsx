@@ -8,13 +8,14 @@ export function meta({ data }: { data: { post: PostType } }) {
   return [{ title: `Update: ${data.post.caption}` }];
 }
 
+// Server-side loader function
 export async function loader({ request, params }: Route.LoaderArgs) {
-  // Load the post and the user who created it
+  // Load the post
   const post = await Post.findById(params.id);
-
   return Response.json({ post });
 }
 
+// React component
 export default function UpdatePostPage({ loaderData }: { loaderData: { post: PostType } }) {
   const { post } = loaderData;
   console.log(post);
@@ -73,6 +74,7 @@ export default function UpdatePostPage({ loaderData }: { loaderData: { post: Pos
   );
 }
 
+// Server-side action function
 export async function action({ request, params }: Route.ActionArgs) {
   const formData = await request.formData();
 
