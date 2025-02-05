@@ -19,12 +19,14 @@ export default function PostsPage({ loaderData }: { loaderData: { posts: PostTyp
   const { posts } = loaderData;
 
   return (
-    <section className="grid">
-      {posts.map(post => (
-        <Link key={post._id.toString()} className="post-link" to={`/posts/${post._id}`}>
-          <PostCard post={post} />
-        </Link>
-      ))}
-    </section>
+    <main className="page">
+      <section className="grid">
+        {posts.map(post => (
+          <Link key={post._id.toString()} className="post-link" to={`/posts/${post._id}`}>
+            <PostCard post={post} />
+          </Link>
+        ))}
+      </section>
+    </main>
   );
 }

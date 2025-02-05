@@ -18,22 +18,24 @@ export default function PostDetailPage({ loaderData }: { loaderData: { post: Pos
   const { post } = loaderData;
 
   return (
-    <div id="post-page" className="page">
-      <h1>{post.caption}</h1>
-      {/* Render the PostCard with the post details */}
-      <PostCard post={post} />
+    <main className="page" id="post-page">
+      <div className="container">
+        <h1>{post.caption}</h1>
+        {/* Render the PostCard with the post details */}
+        <PostCard post={post} />
 
-      <div className="btns">
-        {/* Form to update the post */}
-        <Form action="update">
-          <button type="submit">Update</button>
-        </Form>
+        <div className="btns">
+          {/* Form to update the post */}
+          <Form action="update">
+            <button type="submit">Update</button>
+          </Form>
 
-        {/* Form to delete the post */}
-        <Form action="destroy" method="post">
-          <button type="submit">Delete</button>
-        </Form>
+          {/* Form to delete the post */}
+          <Form action="destroy" method="post">
+            <button type="submit">Delete</button>
+          </Form>
+        </div>
       </div>
-    </div>
+    </main>
   );
 }
