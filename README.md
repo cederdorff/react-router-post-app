@@ -1,100 +1,77 @@
-# Welcome to React Router!
+# 🚀 React Router Post App
 
-A modern, production-ready template for building full-stack React applications using React Router.
+A modern, production-ready template for building full-stack React applications with **React Router, TypeScript, and MongoDB**.
 
-[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/remix-run/react-router-templates/tree/main/default)
+[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/cederdorff/react-router-post-app)
 
-## Features
+## ✨ Features
 
-- 🚀 Server-side rendering
-- ⚡️ Hot Module Replacement (HMR)
-- 📦 Asset bundling and optimization
-- 🔄 Data loading and mutations
-- 🔒 TypeScript by default
-- 🎉 TailwindCSS for styling
-- 📖 [React Router docs](https://reactrouter.com/)
+- ⚡ **Fast & Scalable** – Optimized with Hot Module Replacement (HMR)
+- 🔄 **Full-Stack Data Handling** – Load and mutate data seamlessly
+- 🔒 **Type-Safe Development** – Built with TypeScript for better maintainability
+- 📦 **Efficient Asset Bundling** – Optimized for performance
+- 🎉 **MongoDB Integration** – Persistent database support
+- 🎨 **Custom RACE CSS** – Lightweight, home-made styling framework
+- 📖 **Router-Based Navigation** – Powered by [React Router](https://reactrouter.com/)
 
-## Getting Started
+---
 
-### Installation
+## 🚀 Getting Started
 
-Install the dependencies:
+### 1️⃣ Installation
+
+Clone the repo and install dependencies:
 
 ```bash
+git clone https://github.com/cederdorff/react-router-post-app.git
+cd react-router-post-app
 npm install
 ```
 
-### Development
+### 2️⃣ Setup Environment Variables
 
-Start the development server with HMR:
+Create a `.env` file in the project root and add:
+
+```ini
+MONGODB_URL=mongodb+srv://your-database-url
+NODE_ENV=development
+```
+
+### 3️⃣ Start Development Server
+
+Run the development server with HMR:
 
 ```bash
 npm run dev
 ```
 
-Your application will be available at `http://localhost:5173`.
+Your app will be available at **[http://localhost:5173](http://localhost:5173)**.
 
-## Building for Production
+---
 
-Create a production build:
+## 🏗️ Building for Production
+
+Generate an optimized production build:
 
 ```bash
 npm run build
 ```
 
-## Deployment
+---
 
-### Docker Deployment
+## 🎨 Styling
 
-This template includes three Dockerfiles optimized for different package managers:
-
-- `Dockerfile` - for npm
-- `Dockerfile.pnpm` - for pnpm
-- `Dockerfile.bun` - for bun
-
-To build and run using Docker:
-
-```bash
-# For npm
-docker build -t my-app .
-
-# For pnpm
-docker build -f Dockerfile.pnpm -t my-app .
-
-# For bun
-docker build -f Dockerfile.bun -t my-app .
-
-# Run the container
-docker run -p 3000:3000 my-app
-```
-
-The containerized application can be deployed to any platform that supports Docker, including:
-
-- AWS ECS
-- Google Cloud Run
-- Azure Container Apps
-- Digital Ocean App Platform
-- Fly.io
-- Railway
-
-### DIY Deployment
-
-If you're familiar with deploying Node applications, the built-in app server is production-ready.
-
-Make sure to deploy the output of `npm run build`
-
-```
-├── package.json
-├── package-lock.json (or pnpm-lock.yaml, or bun.lockb)
-├── build/
-│   ├── client/    # Static assets
-│   └── server/    # Server-side code
-```
-
-## Styling
-
-This template comes with [Tailwind CSS](https://tailwindcss.com/) already configured for a simple default starting experience. You can use whatever CSS framework you prefer.
+This template includes **RACE CSS**, a custom lightweight CSS framework designed for simplicity and performance. Customize it as needed!
 
 ---
 
-Built with ❤️ using React Router.
+## ❤️ Built with
+
+- **[React Router](https://reactrouter.com/)** – Client-side routing
+- **TypeScript** – Type safety for better DX
+- **MongoDB** – NoSQL database for persistence
+- **RACE CSS** – Custom styling solution
+
+---
+
+🔗 Feel free to contribute or report issues!
