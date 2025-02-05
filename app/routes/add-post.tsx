@@ -54,13 +54,9 @@ export async function action({ request }: Route.ActionArgs) {
   const formData = await request.formData();
 
   // Extract and typecast values correctly
-  const caption = formData.get("caption") as string | null;
-  const image = formData.get("image") as string | null;
+  const caption = formData.get("caption");
+  const image = formData.get("image");
   const user = "67a2392d97a9919cc4e1fe45"; // Should ideally come from authentication context
-
-  if (!caption || !image) {
-    throw new Response("Caption and Image are required", { status: 400 });
-  }
 
   // Create the post and ensure it's awaited
   await Post.create({
