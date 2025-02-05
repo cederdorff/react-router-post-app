@@ -9,12 +9,16 @@ export function meta({ data }: { data: { post: PostType } }) {
 }
 
 export async function loader({ request, params }: Route.LoaderArgs) {
-  const post = Post.findById(params.id).populate("user");
+  // Load the post and the user who created it
+  const post = await Post.findById(params.id);
+
   return Response.json({ post });
 }
 
-export default function UpdatePostPage() {
-  const { post } = useLoaderData();
+export default function UpdatePostPage({ loaderData }: { loaderData: { post: PostType } }) {
+  const { post } = loaderData;
+  console.log(post);
+
   const [image, setImage] = useState(post.image);
   const navigate = useNavigate();
 
@@ -23,58 +27,59 @@ export default function UpdatePostPage() {
   }
 
   return (
-    <div className="page">
-      <h1>Update Post</h1>
-      <Form id="post-form" method="post">
-        <label htmlFor="caption">Caption</label>
-        <input
-          id="caption"
-          defaultValue={post.caption}
-          name="caption"
-          type="text"
-          aria-label="caption"
-          placeholder="Write a caption..."
-        />
-        <label htmlFor="image">Image URL</label>
-        <input
-          name="image"
-          defaultValue={post.image}
-          type="url"
-          onChange={e => setImage(e.target.value)}
-          placeholder="Paste an image URL..."
-        />
+    <main className="page">
+      <div className="container">
+        <h1>Update Post</h1>
+        <Form id="post-form" method="post">
+          <label htmlFor="caption">Caption</label>
+          <input
+            id="caption"
+            defaultValue={post.caption}
+            name="caption"
+            type="text"
+            aria-label="caption"
+            placeholder="Write a caption..."
+          />
+          <label htmlFor="image">Image URL</label>
+          <input
+            name="image"
+            defaultValue={post.image}
+            type="url"
+            onChange={e => setImage(e.target.value)}
+            placeholder="Paste an image URL..."
+          />
 
-        <label htmlFor="image-preview">Image Preview</label>
-        <img
-          id="image-preview"
-          className="image-preview"
-          src={image || "https://placehold.co/600x400?text=Paste+an+image+URL"}
-          alt="Choose"
-          onError={e => {
-            const target = e.currentTarget as HTMLImageElement;
-            target.src = "https://placehold.co/600x400?text=Error+loading+image";
-          }}
-        />
+          <label htmlFor="image-preview">Image Preview</label>
+          <img
+            id="image-preview"
+            className="image-preview"
+            src={image || "https://placehold.co/600x400?text=Paste+an+image+URL"}
+            alt="Choose"
+            onError={e => {
+              const target = e.currentTarget as HTMLImageElement;
+              target.src = "https://placehold.co/600x400?text=Error+loading+image";
+            }}
+          />
 
-        <input name="uid" type="text" defaultValue={post.uid} hidden />
-        <div className="btns">
-          <button>Save</button>
-          <button type="button" className="btn-cancel" onClick={handleCancel}>
-            Cancel
-          </button>
-        </div>
-      </Form>
-    </div>
+          <div className="btns">
+            <button type="button" className="btn-cancel" onClick={handleCancel}>
+              Cancel
+            </button>
+            <button>Save</button>
+          </div>
+        </Form>
+      </div>
+    </main>
   );
 }
 
 export async function action({ request, params }: Route.ActionArgs) {
   const formData = await request.formData();
 
-  Post.findByIdAndUpdate(params.id, {
+  await Post.findByIdAndUpdate(params.id, {
     caption: formData.get("caption"),
     image: formData.get("image")
   });
 
-  return redirect(`/posts/${params.postId}`);
+  return redirect(`/posts/${params.id}`);
 }
