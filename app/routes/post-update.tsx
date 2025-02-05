@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useLoaderData, useNavigate, Form, redirect } from "react-router";
+import { Form, redirect, useNavigate } from "react-router";
 import type { PostType } from "~/models/Post";
 import Post from "~/models/Post";
 import type { Route } from "./+types/post-update";
