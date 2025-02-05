@@ -321,6 +321,19 @@ nav a.active {
   margin: 0;
 }
 
+.post-card .tags {
+  display: flex;
+  gap: 0.5em;
+  margin: 0.5em 0 0;
+}
+
+.post-card .tags span {
+  background-color: var(--light-green);
+  color: var(--green);
+  padding: 0.2em 0.5em;
+  border-radius: 8px;
+}
+
 /* ---------- Avatar Styling ---------- */
 .avatar {
   display: flex;

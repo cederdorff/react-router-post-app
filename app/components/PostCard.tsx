@@ -8,7 +8,11 @@ export default function PostCard({ post }: { post: PostType }) {
       <img src={post.image} alt={post.caption} />
       <h3>{post.caption}</h3>
       <p>Likes: {post.likes}</p>
-      <p>Tags: {post.tags.join(", ")}</p>
+      <section className="tags">
+        {post.tags.map(tag => (
+          <span key={tag}>{tag}</span>
+        ))}
+      </section>
     </article>
   );
 }
