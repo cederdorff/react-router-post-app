@@ -16,7 +16,7 @@ export default function AddPostPage() {
   }
 
   return (
-    <section className="page">
+    <main className="page">
       <div className="container">
         <h1>Add a Post</h1>
         <Form id="post-form" method="post">
@@ -46,7 +46,7 @@ export default function AddPostPage() {
           </div>
         </Form>
       </div>
-    </section>
+    </main>
   );
 }
 
