@@ -19,7 +19,7 @@ const postSchema = new Schema(
 // Allow `user` to be either an ObjectId or a populated UserType
 export type PostType = InferSchemaType<typeof postSchema> & {
   _id: Types.ObjectId;
-  user: Types.ObjectId | UserType; // `user` field can be an ObjectId or a populated user object
+  user: UserType; // `user` field can be an ObjectId or a populated user object
 };
 // Create a Mongoose model for the Post schema
 // This model provides an interface to interact with the "Post" collection in MongoDB
