@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Form, redirect, useNavigate } from "react-router";
 import Post from "~/models/Post";
-import type { Route } from "./+types/add-post";
+import type { Route } from "./+types/post-add";
 
 export const meta = () => {
   return [{ title: "Remix Post App - Add New Post" }];
