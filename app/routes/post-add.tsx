@@ -39,10 +39,10 @@ export default function AddPostPage() {
           />
 
           <div className="btns">
-            <button>Save</button>
             <button type="button" className="btn-cancel" onClick={handleCancel}>
               Cancel
             </button>
+            <button>Save</button>
           </div>
         </Form>
       </div>

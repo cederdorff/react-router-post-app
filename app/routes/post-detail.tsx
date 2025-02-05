@@ -17,6 +17,13 @@ export async function loader({ request, params }: Route.LoaderArgs) {
 export default function PostDetailPage({ loaderData }: { loaderData: { post: PostType } }) {
   const { post } = loaderData;
 
+  function confirmDelete(event: React.FormEvent) {
+    const response = confirm("Please confirm you want to delete this post.");
+    if (!response) {
+      event.preventDefault();
+    }
+  }
+
   return (
     <main className="page" id="post-page">
       <div className="container">
@@ -25,14 +32,13 @@ export default function PostDetailPage({ loaderData }: { loaderData: { post: Pos
         <PostCard post={post} />
 
         <div className="btns">
+          {/* Form to delete the post */}
+          <Form action="destroy" method="post" onSubmit={confirmDelete}>
+            <button type="submit">Delete</button>
+          </Form>
           {/* Form to update the post */}
           <Form action="update">
             <button type="submit">Update</button>
-          </Form>
-
-          {/* Form to delete the post */}
-          <Form action="destroy" method="post">
-            <button type="submit">Delete</button>
           </Form>
         </div>
       </div>
