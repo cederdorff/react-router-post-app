@@ -33,7 +33,8 @@ npm install
 Create a `.env` file in the project root and add:
 
 ```ini
-MONGODB_URL=mongodb+srv://your-database-url
+MONGODB_URL=mongodb+srv://<user>:<password>@cluster.url.mongodb.net/database_name
+
 NODE_ENV=development
 ```
 
