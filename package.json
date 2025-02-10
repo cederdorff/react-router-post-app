@@ -11,11 +11,14 @@
   "dependencies": {
     "@react-router/node": "^7.1.5",
     "@react-router/serve": "^7.1.5",
+    "bcrypt": "^5.1.1",
     "isbot": "^5.1.17",
     "mongoose": "^8.9.6",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "react-router": "^7.1.5"
+    "react-router": "^7.1.5",
+    "remix-auth": "^4.1.0",
+    "remix-auth-form": "^3.0.0"
   },
   "devDependencies": {
     "@react-router/dev": "^7.1.5",
