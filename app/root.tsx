@@ -4,6 +4,13 @@ import type { Route } from "./+types/root";
 import "./app.css";
 import Nav from "./components/Nav";
 
+export function meta({}: Route.MetaArgs) {
+  return [
+    { title: "React Router Post App 🚀" },
+    { name: "description", content: "Welcome to my React Router Post App" }
+  ];
+}
+
 export const links: Route.LinksFunction = () => [
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
   {

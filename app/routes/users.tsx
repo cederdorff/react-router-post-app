@@ -1,8 +1,5 @@
-import { Link } from "react-router";
-import PostCard from "~/components/PostCard";
-import User, { type UserType } from "~/models/User";
-import posts from "./posts";
 import UserCard from "~/components/UserCard";
+import User, { type UserType } from "~/models/User";
 
 export async function loader() {
   const users = await User.find();

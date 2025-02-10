@@ -1,14 +1,6 @@
 import { Link } from "react-router";
 import PostCard from "~/components/PostCard";
 import Post, { type PostType } from "~/models/Post";
-import type { Route } from "./+types/posts";
-
-export function meta({}: Route.MetaArgs) {
-  return [
-    { title: "React Router Post App 🚀" },
-    { name: "description", content: "Welcome to my React Router Post App" }
-  ];
-}
 
 export async function loader() {
   const posts = await Post.find().populate("user");
