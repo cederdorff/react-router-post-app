@@ -3,10 +3,6 @@ import { Form, redirect, useNavigate } from "react-router";
 import Post from "~/models/Post";
 import type { Route } from "./+types/post-add";
 
-export const meta = () => {
-  return [{ title: "React Router Post App 🚀 - Add New Post" }];
-};
-
 // React component
 export default function AddPostPage() {
   const [image, setImage] = useState("https://placehold.co/600x400?text=Add+your+amazing+image");
