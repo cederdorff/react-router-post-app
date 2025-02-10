@@ -1,9 +1,12 @@
-import mongoose, { Schema, model, type InferSchemaType } from "mongoose";
+import { Schema, Types, model, type InferSchemaType } from "mongoose";
 
 // Define the schema for the User collection in MongoDB
 const userSchema = new Schema(
   {
-    image: String,
+    image: {
+      type: String,
+      required: true
+    },
     mail: {
       type: String,
       required: true,
@@ -21,7 +24,7 @@ const userSchema = new Schema(
 
 // Infer TypeScript type for the schema
 // `InferSchemaType<typeof userSchema>` generates the type based on the schema definition
-export type UserType = InferSchemaType<typeof userSchema> & { _id: mongoose.Types.ObjectId };
+export type UserType = InferSchemaType<typeof userSchema> & { _id: Types.ObjectId | string };
 
 // Create a Mongoose model for the User schema
 // This model provides an interface to interact with the "User" collection in MongoDB

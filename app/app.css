@@ -264,10 +264,6 @@ nav a.active {
   }
 }
 
-.grid > .post-card {
-  cursor: pointer;
-}
-
 /* ---------- Grid Filter Styling ---------- */
 .grid-filter {
   display: grid;

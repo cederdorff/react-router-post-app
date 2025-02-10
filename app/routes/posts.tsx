@@ -17,6 +17,7 @@ export async function loader() {
 
 export default function PostsPage({ loaderData }: { loaderData: { posts: PostType[] } }) {
   const { posts } = loaderData;
+  console.log(posts);
 
   return (
     <main className="page">

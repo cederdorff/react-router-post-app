@@ -18,7 +18,7 @@ const postSchema = new Schema(
 // `_id` is manually added because Mongoose doesn't include it in inferred types
 // Allow `user` to be either an ObjectId or a populated UserType
 export type PostType = InferSchemaType<typeof postSchema> & {
-  _id: Types.ObjectId;
+  _id: Types.ObjectId | string; // `_id` can be an ObjectId or a string
   user: UserType; // `user` field can be an ObjectId or a populated user object
 };
 // Create a Mongoose model for the Post schema
