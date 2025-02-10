@@ -11,7 +11,7 @@ export function meta({}: Route.MetaArgs) {
 }
 
 export async function loader() {
-  const posts: PostType[] = await Post.find().populate("user");
+  const posts = await Post.find().populate("user");
   return Response.json({ posts });
 }
 
