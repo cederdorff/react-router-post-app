@@ -14,11 +14,7 @@ export async function loader({ request }: Route.LoaderArgs) {
   return data(null);
 }
 
-export default function SignUp() {
-  // // if i got an error it will come back with the loader data
-  // const loaderData = useLoaderData();
-  // console.log("error:", loaderData?.error);
-
+export default function SignUp({ actionData }: Route.ComponentProps) {
   return (
     <div id="sign-up-page" className="page">
       <h1>Sign Up</h1>
@@ -48,11 +44,11 @@ export default function SignUp() {
           <button>Sign Up</button>
         </div>
 
-        {/* {loaderData?.error ? (
+        {actionData?.error ? (
           <div className="error-message">
-            <p>{loaderData?.error?.message}</p>
+            <p>{actionData?.error?.message}</p>
           </div>
-        ) : null} */}
+        ) : null}
       </Form>
       <p>
         Already have an account? <NavLink to="/signin">Sign in here.</NavLink>
@@ -69,7 +65,9 @@ export async function action({ request }: Route.ActionArgs) {
 
     return redirect("/signin"); // redirect to the sign-in page
   } catch (error) {
-    console.log(error);
-    return redirect("/signup");
+    if (error instanceof Error) {
+      // here the error related to the authentication process
+      return data({ error });
+    }
   }
 }

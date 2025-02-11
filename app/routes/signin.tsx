@@ -14,7 +14,7 @@ export async function loader({ request }: Route.LoaderArgs) {
   return data(null);
 }
 
-export default function SignIn() {
+export default function SignIn({ actionData }: Route.ComponentProps) {
   return (
     <div id="sign-in-page" className="page">
       <h1>Sign In</h1>
@@ -35,11 +35,11 @@ export default function SignIn() {
           <button>Sign In</button>
         </div>
 
-        {/* {loaderData?.error ? (
+        {actionData?.error ? (
           <div className="error-message">
-            <p>{loaderData?.error?.message}</p>
+            <p>{actionData?.error?.message}</p>
           </div>
-        ) : null} */}
+        ) : null}
       </Form>
       <p>
         No account? <NavLink to="/signup">Sign up here.</NavLink>
@@ -51,14 +51,19 @@ export default function SignIn() {
 // We need to export an action function, here we will use the
 // `authenticator.authenticate method`
 export async function action({ request }: Route.ActionArgs) {
-  // we call the method with the name of the strategy we want to use and the
-  // request object
-  let user = await authenticator.authenticate("user-pass", request);
-
-  let session = await sessionStorage.getSession(request.headers.get("cookie"));
-  session.set("user", user);
-
-  throw redirect("/", {
-    headers: { "Set-Cookie": await sessionStorage.commitSession(session) }
-  });
+  try {
+    // we call the method with the name of the strategy we want to use and the
+    // request object
+    let user = await authenticator.authenticate("user-pass", request);
+    let session = await sessionStorage.getSession(request.headers.get("cookie"));
+    session.set("user", user);
+    return redirect("/", {
+      headers: { "Set-Cookie": await sessionStorage.commitSession(session) }
+    });
+  } catch (error) {
+    if (error instanceof Error) {
+      // here the error related to the authentication process
+      return data({ error });
+    }
+  }
 }

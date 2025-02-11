@@ -10,7 +10,7 @@ const userSchema = new Schema(
     mail: {
       type: String,
       required: true,
-      unique: true // Enforce uniqueness to avoid duplicate emails
+      unique: [true, "User already exists."] // Enforce uniqueness to avoid duplicate emails
     },
     name: {
       type: String

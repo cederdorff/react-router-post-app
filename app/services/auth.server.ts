@@ -1,13 +1,11 @@
 import bcrypt from "bcrypt";
-import mongoose from "mongoose";
 import { Authenticator } from "remix-auth";
 import { FormStrategy } from "remix-auth-form";
-import type { UserType } from "~/models/User";
 import User from "~/models/User";
 
 // Create an instance of the authenticator, pass a generic with what
 // strategies will return and will store in the session
-export let authenticator = new Authenticator<UserType>();
+export let authenticator = new Authenticator<string>();
 
 // Tell the Authenticator to use the form strategy
 authenticator.use(
@@ -18,22 +16,14 @@ authenticator.use(
     // do some validation, errors are saved in the sessionErrorKey
     if (!mail || typeof mail !== "string" || !mail.trim()) {
       throw new Error("Email is required and must be a string");
-      // throw new AuthorizationError("Email is required and must be a string");
     }
 
     if (!password || typeof password !== "string" || !password.trim()) {
       throw new Error("Password is required and must be a string");
-      // throw new AuthorizationError("Password is required and must be a string");
     }
 
     // verify the user
-    const user = await verifyUser(mail, password);
-    if (!user) {
-      // if problem with user throw error AuthorizationError
-      // throw new AuthorizationError("User not found");
-    }
-    console.log(user);
-    return user;
+    return await verifyUser(mail, password);
   }),
   "user-pass"
 );
@@ -48,9 +38,8 @@ async function verifyUser(mail: string, password: string) {
   const passwordMatch = await bcrypt.compare(password, user.password);
   if (!passwordMatch) {
     throw new Error("Invalid password.");
-    // throw new AuthorizationError("Invalid password.");
   }
-  // Remove the password from the user object before returning it
-  // delete user.password;
-  return user;
+
+  // return the user id to be stored in the session
+  return user._id.toString();
 }

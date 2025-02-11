@@ -25,7 +25,6 @@ export async function loader({ request, params }: Route.LoaderArgs) {
 // React component
 export default function UpdatePostPage({ loaderData }: { loaderData: { post: PostType } }) {
   const { post } = loaderData;
-  console.log(post);
 
   const [image, setImage] = useState(post.image);
   const navigate = useNavigate();
