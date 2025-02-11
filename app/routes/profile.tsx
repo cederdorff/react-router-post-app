@@ -30,7 +30,9 @@ export default function Profile({ loaderData }: { loaderData: { user: UserType }
 }
 
 export async function action({ request }: Route.ActionArgs) {
+  // Get the session
   const session = await sessionStorage.getSession(request.headers.get("cookie"));
+  // Destroy the session and redirect to the signin page
   return redirect("/signin", {
     headers: { "Set-Cookie": await sessionStorage.destroySession(session) }
   });
