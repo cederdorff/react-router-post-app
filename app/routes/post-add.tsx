@@ -2,7 +2,15 @@ import { useState } from "react";
 import { Form, redirect, useNavigate } from "react-router";
 import Post from "~/models/Post";
 import type { Route } from "./+types/post-add";
+import { sessionStorage } from "~/services/session.server";
 
+export async function loader({ request }: Route.LoaderArgs) {
+  const session = await sessionStorage.getSession(request.headers.get("cookie"));
+  const user = session.get("user");
+  if (!user) {
+    throw redirect("/signin");
+  }
+}
 // React component
 export default function AddPostPage() {
   const [image, setImage] = useState("https://placehold.co/600x400?text=Add+your+amazing+image");
@@ -49,18 +57,24 @@ export default function AddPostPage() {
 
 // Server-side action
 export async function action({ request }: Route.ActionArgs) {
+  const session = await sessionStorage.getSession(request.headers.get("cookie"));
+  const user = session.get("user");
+  if (!user) {
+    throw redirect("/signin");
+  }
+
   const formData = await request.formData();
 
   // Extract and typecast values correctly
   const caption = formData.get("caption");
   const image = formData.get("image");
-  const user = "65cde4cb0d09cb615a23db17"; // RACE._id (hardcoded) - Should ideally come from authentication context
+  const userId = "65cde4cb0d09cb615a23db17"; // RACE._id (hardcoded) - Should ideally come from authentication context
 
   // Create the post and ensure it's awaited
   await Post.create({
     caption,
     image,
-    user
+    user: userId
   });
 
   return redirect("/");

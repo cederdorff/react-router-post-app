@@ -3,6 +3,7 @@ import { Form, redirect, useNavigate } from "react-router";
 import type { PostType } from "~/models/Post";
 import Post from "~/models/Post";
 import type { Route } from "./+types/post-update";
+import { sessionStorage } from "~/services/session.server";
 
 export function meta({ data }: { data: { post: PostType } }) {
   return [{ title: `Update: ${data.post.caption}` }];
@@ -10,6 +11,12 @@ export function meta({ data }: { data: { post: PostType } }) {
 
 // Server-side loader function
 export async function loader({ request, params }: Route.LoaderArgs) {
+  const session = await sessionStorage.getSession(request.headers.get("cookie"));
+  const user = session.get("user");
+  if (!user) {
+    throw redirect("/signin");
+  }
+
   // Load the post
   const post = await Post.findById(params.id);
   return Response.json({ post });
@@ -76,6 +83,12 @@ export default function UpdatePostPage({ loaderData }: { loaderData: { post: Pos
 
 // Server-side action function
 export async function action({ request, params }: Route.ActionArgs) {
+  const session = await sessionStorage.getSession(request.headers.get("cookie"));
+  const user = session.get("user");
+  if (!user) {
+    throw redirect("/signin");
+  }
+
   const formData = await request.formData();
 
   await Post.findByIdAndUpdate(params.id, {

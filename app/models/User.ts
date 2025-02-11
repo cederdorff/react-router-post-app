@@ -13,8 +13,7 @@ const userSchema = new Schema(
       unique: true // Enforce uniqueness to avoid duplicate emails
     },
     name: {
-      type: String,
-      required: true
+      type: String
     },
     title: String,
     educations: [String],
