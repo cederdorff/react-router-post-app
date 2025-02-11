@@ -9,10 +9,7 @@ const userSchema = new Schema(
       required: true,
       unique: true // Enforce uniqueness to avoid duplicate emails
     },
-    name: {
-      type: String,
-      required: true
-    },
+    name: String,
     title: String,
     educations: [String]
   },
