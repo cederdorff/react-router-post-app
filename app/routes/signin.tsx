@@ -37,7 +37,7 @@ export default function SignIn({ actionData }: Route.ComponentProps) {
 
         {actionData?.error ? (
           <div className="error-message">
-            <p>{actionData?.error?.message}</p>
+            <p>{actionData?.error}</p>
           </div>
         ) : null}
       </Form>
@@ -63,7 +63,7 @@ export async function action({ request }: Route.ActionArgs) {
   } catch (error) {
     if (error instanceof Error) {
       // here the error related to the authentication process
-      return data({ error });
+      return data({ error: error.message });
     }
   }
 }
