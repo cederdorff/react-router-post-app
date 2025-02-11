@@ -1,4 +1,4 @@
-import { data, Form, redirect } from "react-router";
+import { Form, redirect } from "react-router";
 import User, { type UserType } from "~/models/User";
 import { sessionStorage } from "~/services/session.server";
 import type { Route } from "./+types/profile";
