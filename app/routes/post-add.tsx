@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { Form, redirect, useNavigate } from "react-router";
 import Post from "~/models/Post";
-import type { Route } from "./+types/post-add";
 import { sessionStorage } from "~/services/session.server";
+import type { Route } from "./+types/post-add";
 
 export async function loader({ request }: Route.LoaderArgs) {
   const session = await sessionStorage.getSession(request.headers.get("cookie"));

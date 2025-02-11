@@ -1,8 +1,8 @@
-import { data, Link, redirect } from "react-router";
+import { Link, redirect } from "react-router";
 import PostCard from "~/components/PostCard";
 import Post, { type PostType } from "~/models/Post";
-import type { Route } from "./+types/posts";
 import { sessionStorage } from "~/services/session.server";
+import type { Route } from "./+types/posts";
 
 export async function loader({ request }: Route.LoaderArgs) {
   const session = await sessionStorage.getSession(request.headers.get("cookie"));

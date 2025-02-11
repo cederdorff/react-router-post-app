@@ -2,8 +2,8 @@ import { useState } from "react";
 import { Form, redirect, useNavigate } from "react-router";
 import type { PostType } from "~/models/Post";
 import Post from "~/models/Post";
-import type { Route } from "./+types/post-update";
 import { sessionStorage } from "~/services/session.server";
+import type { Route } from "./+types/post-update";
 
 export function meta({ data }: { data: { post: PostType } }) {
   return [{ title: `Update: ${data.post.caption}` }];

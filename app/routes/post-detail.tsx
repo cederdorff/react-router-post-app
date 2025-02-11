@@ -1,8 +1,8 @@
 import { Form, redirect } from "react-router";
 import Post, { type PostType } from "~/models/Post";
+import { sessionStorage } from "~/services/session.server";
 import PostCard from "../components/PostCard";
 import type { Route } from "./+types/post-detail";
-import { sessionStorage } from "~/services/session.server";
 
 export function meta({ data }: { data: { post: PostType } }) {
   return [{ title: data.post.caption }];
