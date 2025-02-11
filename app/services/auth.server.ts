@@ -1,7 +1,9 @@
 import bcrypt from "bcrypt";
+import { redirect } from "react-router";
 import { Authenticator } from "remix-auth";
 import { FormStrategy } from "remix-auth-form";
 import User from "~/models/User";
+import { sessionStorage } from "./session.server";
 
 // Create an instance of the authenticator, pass a generic with what
 // strategies will return and will store in the session
@@ -42,4 +44,18 @@ async function verifyUser(mail: string, password: string) {
 
   // return the user id to be stored in the session
   return user._id.toString();
+}
+
+export async function authenticate(request: Request, returnTo?: string) {
+  let session = await sessionStorage.getSession(request.headers.get("cookie"));
+  let authUserId = session.get("authUserId");
+  if (authUserId) {
+    return authUserId;
+  }
+  if (returnTo) {
+    session.set("returnTo", returnTo);
+  }
+  throw redirect("/signin", {
+    headers: { "Set-Cookie": await sessionStorage.commitSession(session) }
+  });
 }

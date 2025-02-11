@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Form, redirect, useNavigate } from "react-router";
 import type { PostType } from "~/models/Post";
 import Post from "~/models/Post";
-import { sessionStorage } from "~/services/session.server";
+import { authenticate } from "~/services/auth.server";
 import type { Route } from "./+types/post-update";
 
 export function meta({ data }: { data: { post: PostType } }) {
@@ -11,11 +11,7 @@ export function meta({ data }: { data: { post: PostType } }) {
 
 // Server-side loader function
 export async function loader({ request, params }: Route.LoaderArgs) {
-  const session = await sessionStorage.getSession(request.headers.get("cookie"));
-  const authUserId = session.get("authUserId");
-  if (!authUserId) {
-    throw redirect("/signin");
-  }
+  await authenticate(request);
 
   // Load the post
   const post = await Post.findById(params.id);
@@ -82,11 +78,7 @@ export default function UpdatePostPage({ loaderData }: { loaderData: { post: Pos
 
 // Server-side action function
 export async function action({ request, params }: Route.ActionArgs) {
-  const session = await sessionStorage.getSession(request.headers.get("cookie"));
-  const authUserId = session.get("authUserId");
-  if (!authUserId) {
-    throw redirect("/signin");
-  }
+  await authenticate(request);
 
   const formData = await request.formData();
 

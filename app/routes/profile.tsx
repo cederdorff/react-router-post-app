@@ -2,13 +2,10 @@ import { Form, redirect } from "react-router";
 import User, { type UserType } from "~/models/User";
 import { sessionStorage } from "~/services/session.server";
 import type { Route } from "./+types/profile";
+import { authenticate } from "~/services/auth.server";
 
 export async function loader({ request }: Route.LoaderArgs) {
-  const session = await sessionStorage.getSession(request.headers.get("cookie"));
-  const authUserId = session.get("authUserId");
-  if (!authUserId) {
-    throw redirect("/signin");
-  }
+  const authUserId = await authenticate(request);
   const user = await User.findById(authUserId).lean();
   return Response.json({ user });
 }

@@ -1,15 +1,11 @@
 import { useState } from "react";
 import { Form, redirect, useNavigate } from "react-router";
 import Post from "~/models/Post";
-import { sessionStorage } from "~/services/session.server";
+import { authenticate } from "~/services/auth.server";
 import type { Route } from "./+types/post-add";
 
 export async function loader({ request }: Route.LoaderArgs) {
-  const session = await sessionStorage.getSession(request.headers.get("cookie"));
-  const authUserId = session.get("authUserId");
-  if (!authUserId) {
-    throw redirect("/signin");
-  }
+  await authenticate(request);
 }
 // React component
 export default function AddPostPage() {
@@ -57,11 +53,7 @@ export default function AddPostPage() {
 
 // Server-side action
 export async function action({ request }: Route.ActionArgs) {
-  const session = await sessionStorage.getSession(request.headers.get("cookie"));
-  const authUserId = session.get("authUserId");
-  if (!authUserId) {
-    throw redirect("/signin");
-  }
+  const authUserId = await authenticate(request);
 
   const formData = await request.formData();
 

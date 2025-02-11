@@ -1,6 +1,6 @@
-import { Form, redirect } from "react-router";
+import { Form } from "react-router";
 import Post, { type PostType } from "~/models/Post";
-import { sessionStorage } from "~/services/session.server";
+import { authenticate } from "~/services/auth.server";
 import PostCard from "../components/PostCard";
 import type { Route } from "./+types/post-detail";
 
@@ -10,11 +10,7 @@ export function meta({ data }: { data: { post: PostType } }) {
 
 // Server-side loader function
 export async function loader({ request, params }: Route.LoaderArgs) {
-  const session = await sessionStorage.getSession(request.headers.get("cookie"));
-  const authUserId = session.get("authUserId");
-  if (!authUserId) {
-    throw redirect("/signin");
-  }
+  await authenticate(request);
 
   // Load the post and the user who created it
   const post = await Post.findById(params.id).populate("user");
