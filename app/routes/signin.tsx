@@ -7,8 +7,8 @@ import type { Route } from "./+types/signin";
 // authenticated and redirect them to the dashboard
 export async function loader({ request }: Route.LoaderArgs) {
   const session = await sessionStorage.getSession(request.headers.get("cookie"));
-  const user = session.get("user");
-  if (user) {
+  const authUserId = session.get("authUserId");
+  if (authUserId) {
     throw redirect("/");
   }
   return data(null);
@@ -54,9 +54,9 @@ export async function action({ request }: Route.ActionArgs) {
   try {
     // we call the method with the name of the strategy we want to use and the
     // request object
-    let user = await authenticator.authenticate("user-pass", request);
+    let userId = await authenticator.authenticate("user-pass", request);
     let session = await sessionStorage.getSession(request.headers.get("cookie"));
-    session.set("user", user);
+    session.set("authUserId", userId);
     return redirect("/", {
       headers: { "Set-Cookie": await sessionStorage.commitSession(session) }
     });

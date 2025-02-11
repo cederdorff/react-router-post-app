@@ -11,8 +11,8 @@ export function meta({ data }: { data: { post: PostType } }) {
 // Server-side loader function
 export async function loader({ request, params }: Route.LoaderArgs) {
   const session = await sessionStorage.getSession(request.headers.get("cookie"));
-  const user = session.get("user");
-  if (!user) {
+  const authUserId = session.get("authUserId");
+  if (!authUserId) {
     throw redirect("/signin");
   }
 

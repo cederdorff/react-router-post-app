@@ -7,8 +7,8 @@ import type { Route } from "./+types/signup";
 // authenticated and redirect them to the dashboard
 export async function loader({ request }: Route.LoaderArgs) {
   const session = await sessionStorage.getSession(request.headers.get("cookie"));
-  const user = session.get("user");
-  if (user) {
+  const authUserId = session.get("authUserId");
+  if (authUserId) {
     throw redirect("/");
   }
   return data(null);

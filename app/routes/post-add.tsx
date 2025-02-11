@@ -6,8 +6,8 @@ import { sessionStorage } from "~/services/session.server";
 
 export async function loader({ request }: Route.LoaderArgs) {
   const session = await sessionStorage.getSession(request.headers.get("cookie"));
-  const user = session.get("user");
-  if (!user) {
+  const authUserId = session.get("authUserId");
+  if (!authUserId) {
     throw redirect("/signin");
   }
 }
@@ -58,8 +58,8 @@ export default function AddPostPage() {
 // Server-side action
 export async function action({ request }: Route.ActionArgs) {
   const session = await sessionStorage.getSession(request.headers.get("cookie"));
-  const user = session.get("user");
-  if (!user) {
+  const authUserId = session.get("authUserId");
+  if (!authUserId) {
     throw redirect("/signin");
   }
 
@@ -68,13 +68,12 @@ export async function action({ request }: Route.ActionArgs) {
   // Extract and typecast values correctly
   const caption = formData.get("caption");
   const image = formData.get("image");
-  const userId = "65cde4cb0d09cb615a23db17"; // RACE._id (hardcoded) - Should ideally come from authentication context
 
   // Create the post and ensure it's awaited
   await Post.create({
     caption,
     image,
-    user: userId
+    user: authUserId
   });
 
   return redirect("/");

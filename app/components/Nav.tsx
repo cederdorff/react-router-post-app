@@ -6,6 +6,7 @@ export default function Nav() {
       <NavLink to="/">Posts</NavLink>
       <NavLink to="/add-post">Add Post</NavLink>
       <NavLink to="/users">Users</NavLink>
+      <NavLink to="/profile">Profile</NavLink>
     </nav>
   );
 }

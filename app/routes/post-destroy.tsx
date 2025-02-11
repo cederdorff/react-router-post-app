@@ -6,8 +6,8 @@ import { sessionStorage } from "~/services/session.server";
 // Server-side action
 export async function action({ params, request }: Route.ActionArgs) {
   const session = await sessionStorage.getSession(request.headers.get("cookie"));
-  const user = session.get("user");
-  if (!user) {
+  const authUserId = session.get("authUserId");
+  if (!authUserId) {
     throw redirect("/signin");
   }
 
