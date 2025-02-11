@@ -9,8 +9,6 @@ export async function loader() {
 export default function UsersPage({ loaderData }: { loaderData: { users: UserType[] } }) {
   const { users } = loaderData;
 
-  console.log(users);
-
   return (
     <main className="page">
       <section className="grid">

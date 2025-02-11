@@ -1,30 +1,20 @@
-import { json } from "@remix-run/node";
-import { Form, NavLink, useLoaderData } from "@remix-run/react";
-import { authenticator } from "../services/auth.server";
-import { sessionStorage } from "../services/session.server";
+import { data, Form, NavLink, redirect } from "react-router";
+import { authenticator } from "~/services/auth.server";
+import { sessionStorage } from "~/services/session.server";
+import type { Route } from "./+types/signin";
 
-export async function loader({ request }) {
-  // If the user is already authenticated redirect to /posts directly
-  await authenticator.isAuthenticated(request, {
-    successRedirect: "/posts",
-  });
-  // Retrieve error message from session if present
-  const session = await sessionStorage.getSession(request.headers.get("Cookie"));
-  // Get the error message from the session
-  const error = session.get("sessionErrorKey");
-  // Remove the error message from the session after it's been retrieved
-  session.unset("sessionErrorKey");
-  // Commit the updated session that no longer contains the error message
-  const headers = new Headers({
-    "Set-Cookie": await sessionStorage.commitSession(session),
-  });
-
-  return json({ error }, { headers }); // return the error message
+// We need to export a loader function to check if the user is already
+// authenticated and redirect them to the dashboard
+export async function loader({ request }: Route.LoaderArgs) {
+  const session = await sessionStorage.getSession(request.headers.get("cookie"));
+  const user = session.get("user");
+  if (user) {
+    throw redirect("/");
+  }
+  return data(null);
 }
 
 export default function SignIn() {
-  // if i got an error it will come back with the loader dxata
-  const loaderData = useLoaderData();
   return (
     <div id="sign-in-page" className="page">
       <h1>Sign In</h1>
@@ -45,11 +35,11 @@ export default function SignIn() {
           <button>Sign In</button>
         </div>
 
-        {loaderData?.error ? (
+        {/* {loaderData?.error ? (
           <div className="error-message">
             <p>{loaderData?.error?.message}</p>
           </div>
-        ) : null}
+        ) : null} */}
       </Form>
       <p>
         No account? <NavLink to="/signup">Sign up here.</NavLink>
@@ -58,12 +48,17 @@ export default function SignIn() {
   );
 }
 
-export async function action({ request }) {
+// We need to export an action function, here we will use the
+// `authenticator.authenticate method`
+export async function action({ request }: Route.ActionArgs) {
   // we call the method with the name of the strategy we want to use and the
-  // request object, optionally we pass an object with the URLs we want the user
-  // to be redirected to after a success or a failure
-  return await authenticator.authenticate("user-pass", request, {
-    successRedirect: "/posts",
-    failureRedirect: "/signin",
+  // request object
+  let user = await authenticator.authenticate("user-pass", request);
+
+  let session = await sessionStorage.getSession(request.headers.get("cookie"));
+  session.set("user", user);
+
+  throw redirect("/", {
+    headers: { "Set-Cookie": await sessionStorage.commitSession(session) }
   });
 }

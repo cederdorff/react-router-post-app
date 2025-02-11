@@ -1,32 +1,23 @@
-import { json, redirect } from "@remix-run/node";
-import { Form, NavLink, useLoaderData } from "@remix-run/react";
-import mongoose from "mongoose";
-import { authenticator } from "../services/auth.server";
-import { sessionStorage } from "../services/session.server";
+import { data, Form, NavLink, redirect } from "react-router";
+import User from "~/models/User";
+import { sessionStorage } from "~/services/session.server";
+import type { Route } from "./+types/signup";
 
-export async function loader({ request }) {
-  // If the user is already authenticated redirect to /posts directly
-  await authenticator.isAuthenticated(request, {
-    successRedirect: "/posts",
-  });
-  // Retrieve error message from session if present
-  const session = await sessionStorage.getSession(request.headers.get("Cookie"));
-  // Get the error message from the session
-  const error = session.get("sessionErrorKey");
-  // Remove the error message from the session after it's been retrieved
-  session.unset("sessionErrorKey");
-  // Commit the updated session that no longer contains the error message
-  const headers = new Headers({
-    "Set-Cookie": await sessionStorage.commitSession(session),
-  });
-
-  return json({ error }, { headers }); // return the error message
+// We need to export a loader function to check if the user is already
+// authenticated and redirect them to the dashboard
+export async function loader({ request }: Route.LoaderArgs) {
+  const session = await sessionStorage.getSession(request.headers.get("cookie"));
+  const user = session.get("user");
+  if (user) {
+    throw redirect("/");
+  }
+  return data(null);
 }
 
 export default function SignUp() {
-  // if i got an error it will come back with the loader data
-  const loaderData = useLoaderData();
-  console.log("error:", loaderData?.error);
+  // // if i got an error it will come back with the loader data
+  // const loaderData = useLoaderData();
+  // console.log("error:", loaderData?.error);
 
   return (
     <div id="sign-up-page" className="page">
@@ -57,11 +48,11 @@ export default function SignUp() {
           <button>Sign Up</button>
         </div>
 
-        {loaderData?.error ? (
+        {/* {loaderData?.error ? (
           <div className="error-message">
             <p>{loaderData?.error?.message}</p>
           </div>
-        ) : null}
+        ) : null} */}
       </Form>
       <p>
         Already have an account? <NavLink to="/signin">Sign in here.</NavLink>
@@ -70,11 +61,11 @@ export default function SignUp() {
   );
 }
 
-export async function action({ request }) {
+export async function action({ request }: Route.ActionArgs) {
   try {
     const formData = await request.formData(); // get the form data
     const newUser = Object.fromEntries(formData); // convert the form data to an object
-    await mongoose.models.User.create(newUser); // create the user
+    await User.create(newUser); // create the user
 
     return redirect("/signin"); // redirect to the sign-in page
   } catch (error) {

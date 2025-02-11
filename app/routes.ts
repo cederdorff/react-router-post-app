@@ -8,5 +8,5 @@ export default [
   route("add-post", "routes/post-add.tsx"),
   route("/users", "routes/users.tsx"),
   route("/signin", "routes/signin.tsx"),
-  route("/signun", "routes/signup.tsx")
+  route("/signup", "routes/signup.tsx")
 ] satisfies RouteConfig;
