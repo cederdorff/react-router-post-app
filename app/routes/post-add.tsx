@@ -3,7 +3,7 @@ import { data, Form, redirect, useNavigate } from "react-router";
 import Post from "~/models/Post";
 import { sessionStorage } from "~/services/session.server";
 import type { Route } from "./+types/post-add";
-import mongoose from "mongoose";
+import { Error } from "mongoose";
 
 export async function loader({ request }: Route.LoaderArgs) {
   const session = await sessionStorage.getSession(request.headers.get("cookie"));
@@ -101,7 +101,7 @@ export async function action({ request }: Route.ActionArgs) {
 
     return redirect("/");
   } catch (error) {
-    if (error instanceof mongoose.Error.ValidationError) {
+    if (error instanceof Error.ValidationError) {
       return data({ errors: error.errors });
     }
   }
