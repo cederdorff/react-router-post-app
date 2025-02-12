@@ -3,6 +3,7 @@ import { data, Form, redirect, useNavigate } from "react-router";
 import Post from "~/models/Post";
 import { sessionStorage } from "~/services/session.server";
 import type { Route } from "./+types/post-add";
+import mongoose from "mongoose";
 
 export async function loader({ request }: Route.LoaderArgs) {
   const session = await sessionStorage.getSession(request.headers.get("cookie"));
@@ -20,16 +21,31 @@ export default function AddPostPage({ actionData }: Route.ComponentProps) {
     navigate(-1);
   }
 
+  console.log(actionData);
+
   return (
     <main className="page">
       <div className="container">
         <h1>Add a Post</h1>
         <Form id="post-form" method="post">
           <label htmlFor="caption">Caption</label>
-          <input id="caption" name="caption" type="text" aria-label="caption" placeholder="Write a caption..." />
+          <input
+            id="caption"
+            name="caption"
+            type="text"
+            aria-label="caption"
+            placeholder="Write a caption..."
+            className={actionData?.errors.caption ? "error" : ""}
+          />
 
           <label htmlFor="image">Image URL</label>
-          <input name="image" type="url" onChange={e => setImage(e.target.value)} placeholder="Paste an image URL..." />
+          <input
+            name="image"
+            type="url"
+            onChange={e => setImage(e.target.value)}
+            placeholder="Paste an image URL..."
+            className={actionData?.errors.image ? "error" : ""}
+          />
 
           <label htmlFor="image-preview">Image Preview</label>
           <img
@@ -42,9 +58,11 @@ export default function AddPostPage({ actionData }: Route.ComponentProps) {
               target.src = "https://placehold.co/600x400?text=Error+loading+image";
             }}
           />
-          {actionData?.error && (
+          {actionData?.errors && (
             <div className="error-message">
-              <p>{actionData?.error}</p>
+              {Object.values(actionData.errors).map((error: any) => (
+                <p key={error.path}>{error.message}</p>
+              ))}
             </div>
           )}
           <div className="btns">
@@ -83,8 +101,8 @@ export async function action({ request }: Route.ActionArgs) {
 
     return redirect("/");
   } catch (error) {
-    if (error instanceof Error) {
-      return data({ error: error.message });
+    if (error instanceof mongoose.Error.ValidationError) {
+      return data({ errors: error.errors });
     }
   }
 }
