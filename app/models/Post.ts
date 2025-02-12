@@ -4,8 +4,8 @@ import type { UserType } from "./User";
 // Define the schema for the Post collection in MongoDB
 const postSchema = new Schema(
   {
-    caption: { type: String, required: true },
-    image: { type: String, required: true },
+    caption: { type: String, required: [true, "Please, type a caption."] },
+    image: { type: String, required: [true, "Please, paste an image URL"] },
     user: { type: Types.ObjectId, ref: "User", required: true }, // Reference to the user who created the post (ObjectId pointing to the "User" collection)
     likes: { type: Number, default: 0 },
     tags: { type: [String], default: [] }

@@ -1,10 +1,11 @@
 import { useState } from "react";
-import { Form, redirect, useNavigate } from "react-router";
+import { data, Form, redirect, useNavigate } from "react-router";
 import Post from "~/models/Post";
 import type { Route } from "./+types/post-add";
+import { Error } from "mongoose";
 
 // React component
-export default function AddPostPage() {
+export default function AddPostPage({ actionData }: Route.ComponentProps) {
   const [image, setImage] = useState("https://placehold.co/600x400?text=Add+your+amazing+image");
   const navigate = useNavigate();
 
@@ -18,10 +19,23 @@ export default function AddPostPage() {
         <h1>Add a Post</h1>
         <Form id="post-form" method="post">
           <label htmlFor="caption">Caption</label>
-          <input id="caption" name="caption" type="text" aria-label="caption" placeholder="Write a caption..." />
+          <input
+            id="caption"
+            name="caption"
+            type="text"
+            aria-label="caption"
+            placeholder="Write a caption..."
+            className={actionData?.errors.caption ? "error" : ""}
+          />
 
           <label htmlFor="image">Image URL</label>
-          <input name="image" type="url" onChange={e => setImage(e.target.value)} placeholder="Paste an image URL..." />
+          <input
+            name="image"
+            type="url"
+            onChange={e => setImage(e.target.value)}
+            placeholder="Paste an image URL..."
+            className={actionData?.errors.image ? "error" : ""}
+          />
 
           <label htmlFor="image-preview">Image Preview</label>
           <img
@@ -34,7 +48,13 @@ export default function AddPostPage() {
               target.src = "https://placehold.co/600x400?text=Error+loading+image";
             }}
           />
-
+          {actionData?.errors && (
+            <div className="error-message">
+              {Object.values(actionData.errors).map((error: any) => (
+                <p key={error.path}>{error.message}</p>
+              ))}
+            </div>
+          )}
           <div className="btns">
             <button type="button" className="btn-cancel" onClick={handleCancel}>
               Cancel
@@ -56,12 +76,18 @@ export async function action({ request }: Route.ActionArgs) {
   const image = formData.get("image");
   const user = "65cde4cb0d09cb615a23db17"; // RACE._id (hardcoded) - Should ideally come from authentication context
 
-  // Create the post and ensure it's awaited
-  await Post.create({
-    caption,
-    image,
-    user
-  });
-
-  return redirect("/");
+  try {
+    // Create the post and ensure it's awaited
+    await Post.create({
+      caption,
+      image,
+      user
+    });
+    return redirect("/");
+  } catch (error) {
+    // Error imported from "mongoose"
+    if (error instanceof Error.ValidationError) {
+      return data({ errors: error.errors });
+    }
+  }
 }
