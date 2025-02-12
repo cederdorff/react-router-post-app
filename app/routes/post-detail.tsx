@@ -18,12 +18,13 @@ export async function loader({ request, params }: Route.LoaderArgs) {
 
   // Load the post and the user who created it
   const post = await Post.findById(params.id).populate("user");
-  return Response.json({ post }); // Return the post and user data
+  return Response.json({ post, authUserId }); // Return the post and user data
 }
 
 // React component
-export default function PostDetailPage({ loaderData }: { loaderData: { post: PostType } }) {
-  const { post } = loaderData;
+export default function PostDetailPage({ loaderData }: { loaderData: { post: PostType; authUserId: String } }) {
+  const { post, authUserId } = loaderData;
+  console.log(loaderData);
 
   function confirmDelete(event: React.FormEvent) {
     const response = confirm("Please confirm you want to delete this post.");
@@ -38,17 +39,18 @@ export default function PostDetailPage({ loaderData }: { loaderData: { post: Pos
         <h1>{post.caption}</h1>
         {/* Render the PostCard with the post details */}
         <PostCard post={post} />
-
-        <div className="btns">
-          {/* Form to delete the post */}
-          <Form action="destroy" method="post" onSubmit={confirmDelete}>
-            <button type="submit">Delete</button>
-          </Form>
-          {/* Form to update the post */}
-          <Form action="update">
-            <button type="submit">Update</button>
-          </Form>
-        </div>
+        {authUserId === post.user._id.toString() && ( // Only show the buttons if the user is the author of the post
+          <div className="btns">
+            {/* Form to delete the post */}
+            <Form action="destroy" method="post" onSubmit={confirmDelete}>
+              <button type="submit">Delete</button>
+            </Form>
+            {/* Form to update the post */}
+            <Form action="update">
+              <button type="submit">Update</button>
+            </Form>
+          </div>
+        )}
       </div>
     </main>
   );

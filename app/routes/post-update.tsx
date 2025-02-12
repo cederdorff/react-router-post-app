@@ -19,6 +19,10 @@ export async function loader({ request, params }: Route.LoaderArgs) {
 
   // Load the post
   const post = await Post.findById(params.id);
+  if (!post || post.user.toString() !== authUserId) {
+    throw redirect(`/posts/${params.id}`);
+  }
+
   return Response.json({ post });
 }
 
