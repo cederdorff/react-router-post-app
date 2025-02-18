@@ -85,6 +85,7 @@ export async function action({ request }: Route.ActionArgs) {
     throw redirect("/signin");
   }
 
+  // Get the form data
   const formData = await request.formData();
 
   // Extract and typecast values correctly
