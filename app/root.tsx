@@ -3,7 +3,6 @@ import { data, isRouteErrorResponse, Links, Meta, Outlet, redirect, Scripts, Scr
 import type { Route } from "./+types/root";
 import "./app.css";
 import Nav from "./components/Nav";
-import { sessionStorage } from "./services/session.server";
 
 export function meta({}: Route.MetaArgs) {
   return [
@@ -43,19 +42,9 @@ export function Layout({ children }: { children: React.ReactNode }) {
   );
 }
 
-export async function loader({ request }: Route.LoaderArgs) {
-  const session = await sessionStorage.getSession(request.headers.get("cookie"));
-  const authUserId = session.get("authUserId");
-
-  return data({ authUserId });
-}
-
-export default function App({ loaderData }: Route.ComponentProps) {
-  console.log(loaderData);
-
+export default function App() {
   return (
     <>
-      {loaderData?.authUserId ? <Nav /> : ""}
       <Outlet />
     </>
   );

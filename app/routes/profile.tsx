@@ -1,15 +1,12 @@
-import { Form, redirect } from "react-router";
+import { Form } from "react-router";
 import User, { type UserType } from "~/models/User";
-import { sessionStorage } from "~/services/session.server";
+import { authenticateUser } from "~/services/auth.server";
 import type { Route } from "./+types/profile";
 
 export async function loader({ request }: Route.LoaderArgs) {
-  const session = await sessionStorage.getSession(request.headers.get("cookie"));
-  const authUserId = session.get("authUserId");
-  if (!authUserId) {
-    throw redirect("/signin");
-  }
-  const user = await User.findById(authUserId).lean();
+  const authUser = await authenticateUser(request);
+
+  const user = await User.findById(authUser.userId);
   return Response.json({ user });
 }
 
@@ -22,18 +19,9 @@ export default function Profile({ loaderData }: { loaderData: { user: UserType }
       <p>Name: {user.name}</p>
       <p>Title: {user.title}</p>
       <p>Mail: {user.mail}</p>
-      <Form method="post">
+      <Form method="post" action="/auth/signout">
         <button>Logout</button>
       </Form>
     </div>
   );
-}
-
-export async function action({ request }: Route.ActionArgs) {
-  // Get the session
-  const session = await sessionStorage.getSession(request.headers.get("cookie"));
-  // Destroy the session and redirect to the signin page
-  return redirect("/signin", {
-    headers: { "Set-Cookie": await sessionStorage.destroySession(session) }
-  });
 }

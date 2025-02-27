@@ -1,16 +1,12 @@
+import { Error } from "mongoose";
 import { useState } from "react";
 import { data, Form, redirect, useNavigate } from "react-router";
 import Post from "~/models/Post";
-import { sessionStorage } from "~/services/session.server";
 import type { Route } from "./+types/post-add";
-import { Error } from "mongoose";
+import { authenticateUser } from "~/services/auth.server";
 
 export async function loader({ request }: Route.LoaderArgs) {
-  const session = await sessionStorage.getSession(request.headers.get("cookie"));
-  const authUserId = session.get("authUserId");
-  if (!authUserId) {
-    throw redirect("/signin");
-  }
+  return await authenticateUser(request);
 }
 // React component
 export default function AddPostPage({ actionData }: Route.ComponentProps) {
@@ -20,8 +16,6 @@ export default function AddPostPage({ actionData }: Route.ComponentProps) {
   function handleCancel() {
     navigate(-1);
   }
-
-  console.log(actionData);
 
   return (
     <main className="page">
@@ -79,11 +73,7 @@ export default function AddPostPage({ actionData }: Route.ComponentProps) {
 
 // Server-side action
 export async function action({ request }: Route.ActionArgs) {
-  const session = await sessionStorage.getSession(request.headers.get("cookie"));
-  const authUserId = session.get("authUserId");
-  if (!authUserId) {
-    throw redirect("/signin");
-  }
+  const user = await authenticateUser(request);
 
   // Get the form data
   const formData = await request.formData();
@@ -97,7 +87,7 @@ export async function action({ request }: Route.ActionArgs) {
     await Post.create({
       caption,
       image,
-      user: authUserId
+      user: user._id
     });
 
     return redirect("/");

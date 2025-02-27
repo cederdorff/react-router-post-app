@@ -2,8 +2,8 @@ import { useState } from "react";
 import { Form, redirect, useNavigate } from "react-router";
 import type { PostType } from "~/models/Post";
 import Post from "~/models/Post";
-import { sessionStorage } from "~/services/session.server";
 import type { Route } from "./+types/post-update";
+import { authenticateUser } from "~/services/auth.server";
 
 export function meta({ data }: { data: { post: PostType } }) {
   return [{ title: `Update: ${data.post.caption}` }];
@@ -11,15 +11,11 @@ export function meta({ data }: { data: { post: PostType } }) {
 
 // Server-side loader function
 export async function loader({ request, params }: Route.LoaderArgs) {
-  const session = await sessionStorage.getSession(request.headers.get("cookie"));
-  const authUserId = session.get("authUserId");
-  if (!authUserId) {
-    throw redirect("/signin");
-  }
+  const user = await authenticateUser(request);
 
   // Load the post
   const post = await Post.findById(params.id);
-  if (!post || post.user.toString() !== authUserId) {
+  if (!post || post.user.toString() !== user._id.toString()) {
     throw redirect(`/posts/${params.id}`);
   }
 
@@ -86,11 +82,7 @@ export default function UpdatePostPage({ loaderData }: { loaderData: { post: Pos
 
 // Server-side action function
 export async function action({ request, params }: Route.ActionArgs) {
-  const session = await sessionStorage.getSession(request.headers.get("cookie"));
-  const authUserId = session.get("authUserId");
-  if (!authUserId) {
-    throw redirect("/signin");
-  }
+  await authenticateUser(request);
 
   const formData = await request.formData();
 

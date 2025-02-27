@@ -4,7 +4,7 @@
   "type": "module",
   "scripts": {
     "build": "react-router build",
-    "dev": "react-router dev",
+    "dev": "react-router dev --port 3000",
     "start": "react-router-serve ./build/server/index.js",
     "typecheck": "react-router typegen && tsc"
   },
@@ -18,7 +18,8 @@
     "react-dom": "^19.0.0",
     "react-router": "^7.1.5",
     "remix-auth": "^4.1.0",
-    "remix-auth-form": "^3.0.0"
+    "remix-auth-form": "^3.0.0",
+    "remix-auth-github": "^3.0.2"
   },
   "devDependencies": {
     "@react-router/dev": "^7.1.5",

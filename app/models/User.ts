@@ -19,7 +19,6 @@ const userSchema = new Schema(
     educations: [String],
     password: {
       type: String,
-      required: true, // Ensure user passwords are required
       select: false // Automatically exclude from query results
     }
   },
@@ -34,7 +33,9 @@ userSchema.pre("save", async function (next) {
   if (!user.isModified("password")) {
     return next(); // continue
   }
-
+  if (!user.password) {
+    return next();
+  }
   const salt = await bcrypt.genSalt(10); // generate a salt
   user.password = await bcrypt.hash(user.password, salt); // hash the password
   next(); // continue

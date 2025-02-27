@@ -1,8 +1,8 @@
-import { Form, redirect } from "react-router";
+import { Form } from "react-router";
 import Post, { type PostType } from "~/models/Post";
-import { sessionStorage } from "~/services/session.server";
 import PostCard from "../components/PostCard";
 import type { Route } from "./+types/post-detail";
+import { authenticateUser } from "~/services/auth.server";
 
 export function meta({ data }: { data: { post: PostType } }) {
   return [{ title: data.post.caption }];
@@ -10,11 +10,9 @@ export function meta({ data }: { data: { post: PostType } }) {
 
 // Server-side loader function
 export async function loader({ request, params }: Route.LoaderArgs) {
-  const session = await sessionStorage.getSession(request.headers.get("cookie"));
-  const authUserId = session.get("authUserId");
-  if (!authUserId) {
-    throw redirect("/signin");
-  }
+  const authUser = await authenticateUser(request);
+
+  const authUserId = authUser.userId.toString(); // Get the authenticated user's ID
 
   // Load the post and the user who created it
   const post = await Post.findById(params.id).populate("user");
@@ -24,7 +22,6 @@ export async function loader({ request, params }: Route.LoaderArgs) {
 // React component
 export default function PostDetailPage({ loaderData }: { loaderData: { post: PostType; authUserId: String } }) {
   const { post, authUserId } = loaderData;
-  console.log(loaderData);
 
   function confirmDelete(event: React.FormEvent) {
     const response = confirm("Please confirm you want to delete this post.");
