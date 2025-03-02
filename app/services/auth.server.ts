@@ -59,7 +59,7 @@ export async function authenticateUser(request: Request) {
   // Get session from the request cookies
   const session = await sessionStorage.getSession(request.headers.get("cookie"));
   // Retrieve the 'user' value from the session
-  const user = session.get("user");
+  const user = session.get("authUser");
 
   // If there's no user, redirect to the sign-in page
   if (!user) {
@@ -74,6 +74,6 @@ export async function getAuthUser(request: Request) {
   // Get session from the request cookies
   const session = await sessionStorage.getSession(request.headers.get("cookie"));
   // Retrieve the 'user' value from the session
-  const user = session.get("user");
+  const user = session.get("authUser");
   return user;
 }

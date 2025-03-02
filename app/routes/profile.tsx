@@ -5,7 +5,6 @@ import type { Route } from "./+types/profile";
 
 export async function loader({ request }: Route.LoaderArgs) {
   const authUser = await authenticateUser(request);
-
   const user = await User.findById(authUser._id);
   return Response.json({ user });
 }
