@@ -14,7 +14,7 @@ export default function SignIn() {
     <div id="sign-in-page" className="page">
       <h1>Sign In</h1>
       <Form id="sign-in-form" method="post" action="/auth/github">
-        <div className="btns">
+        <div className="btns oauth">
           <button>Sign In with GitHub</button>
         </div>
       </Form>
