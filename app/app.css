@@ -132,7 +132,7 @@ form input {
 form .btns {
   grid-column: 2;
 }
-form .btns.oauth {
+form .btns.full {
   grid-column: 1 / 3;
 }
 
