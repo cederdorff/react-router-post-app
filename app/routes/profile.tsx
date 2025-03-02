@@ -20,7 +20,9 @@ export default function Profile({ loaderData }: { loaderData: { user: UserType }
       <p>Title: {user.title}</p>
       <p>Mail: {user.mail}</p>
       <Form method="post" action="/auth/signout">
-        <button>Sign Out</button>
+        <div className="btns full">
+          <button>Sign Out</button>
+        </div>
       </Form>
     </div>
   );
