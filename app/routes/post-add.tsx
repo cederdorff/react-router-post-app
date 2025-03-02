@@ -73,7 +73,7 @@ export default function AddPostPage({ actionData }: Route.ComponentProps) {
 
 // Server-side action
 export async function action({ request }: Route.ActionArgs) {
-  const user = await authenticateUser(request);
+  const authUser = await authenticateUser(request);
 
   // Get the form data
   const formData = await request.formData();
@@ -87,7 +87,7 @@ export async function action({ request }: Route.ActionArgs) {
     await Post.create({
       caption,
       image,
-      user: user._id
+      user: authUser._id
     });
 
     return redirect("/");

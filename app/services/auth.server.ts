@@ -6,7 +6,7 @@ import { redirect } from "react-router";
 
 // Create an instance of the authenticator, pass a generic with what
 // strategies will return and will store in the session
-export let authenticator = new Authenticator<any>();
+export let authenticator = new Authenticator<{ _id: string; accessToken: string; refreshToken: string | null }>();
 
 authenticator.use(
   new GitHubStrategy(
@@ -17,11 +17,10 @@ authenticator.use(
     },
     async ({ tokens, request }) => {
       const gitHubUser = await getGitHubUser(tokens.accessToken());
-
-      const userId = await findOrCreateUserInDatabase(gitHubUser);
+      const userId = await findOrCreateUser(gitHubUser);
 
       return {
-        userId,
+        _id: userId,
         accessToken: tokens.accessToken(),
         refreshToken: tokens.hasRefreshToken() ? tokens.refreshToken() : null
       };
@@ -39,10 +38,14 @@ async function getGitHubUser(accessToken: string) {
     }
   });
 
-  return await response.json();
+  if (!response.ok) {
+    throw new Error(`GitHub API Error: ${response.status} ${response.statusText}`);
+  }
+
+  return response.json();
 }
 
-async function findOrCreateUserInDatabase(gitHubUser: any) {
+async function findOrCreateUser(gitHubUser: any) {
   const { name, email, avatar_url } = gitHubUser;
   let dbUser = await User.findOne({ mail: email }).lean();
   if (!dbUser) {
@@ -55,7 +58,6 @@ async function findOrCreateUserInDatabase(gitHubUser: any) {
 export async function authenticateUser(request: Request) {
   // Get session from the request cookies
   const session = await sessionStorage.getSession(request.headers.get("cookie"));
-
   // Retrieve the 'user' value from the session
   const user = session.get("user");
 

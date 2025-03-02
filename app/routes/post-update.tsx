@@ -11,11 +11,11 @@ export function meta({ data }: { data: { post: PostType } }) {
 
 // Server-side loader function
 export async function loader({ request, params }: Route.LoaderArgs) {
-  const user = await authenticateUser(request);
+  const authUser = await authenticateUser(request);
 
   // Load the post
   const post = await Post.findById(params.id);
-  if (!post || post.user.toString() !== user._id.toString()) {
+  if (!post || post.user.toString() !== authUser._id.toString()) {
     throw redirect(`/posts/${params.id}`);
   }
 

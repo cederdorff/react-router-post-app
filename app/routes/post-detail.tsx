@@ -12,11 +12,9 @@ export function meta({ data }: { data: { post: PostType } }) {
 export async function loader({ request, params }: Route.LoaderArgs) {
   const authUser = await authenticateUser(request);
 
-  const authUserId = authUser.userId.toString(); // Get the authenticated user's ID
-
   // Load the post and the user who created it
   const post = await Post.findById(params.id).populate("user");
-  return Response.json({ post, authUserId }); // Return the post and user data
+  return Response.json({ post, authUserId: authUser._id }); // Return the post and user data
 }
 
 // React component

@@ -6,7 +6,7 @@ import type { Route } from "./+types/profile";
 export async function loader({ request }: Route.LoaderArgs) {
   const authUser = await authenticateUser(request);
 
-  const user = await User.findById(authUser.userId);
+  const user = await User.findById(authUser._id);
   return Response.json({ user });
 }
 
@@ -20,7 +20,7 @@ export default function Profile({ loaderData }: { loaderData: { user: UserType }
       <p>Title: {user.title}</p>
       <p>Mail: {user.mail}</p>
       <Form method="post" action="/auth/signout">
-        <button>Logout</button>
+        <button>Sign Out</button>
       </Form>
     </div>
   );
