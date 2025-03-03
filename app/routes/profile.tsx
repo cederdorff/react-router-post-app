@@ -3,6 +3,7 @@ import User, { type UserType } from "~/models/User";
 import { authenticateUser } from "~/services/auth.server";
 import type { Route } from "./+types/profile";
 import { useState } from "react";
+import type { request } from "http";
 
 export async function loader({ request }: Route.LoaderArgs) {
   const authUser = await authenticateUser(request);
@@ -15,66 +16,68 @@ export default function Profile({ loaderData }: { loaderData: { user: UserType }
   const [image, setImage] = useState(user.image || "https://placehold.co/600x400?text=Add+your+amazing+image");
 
   return (
-    <div className="page">
-      <h1>Profile</h1>
+    <main className="page">
+      <div className="container">
+        <h1>Profile</h1>
 
-      <Form id="profile-form" method="post">
-        <label htmlFor="caption">Name</label>
-        <input
-          defaultValue={user.name || ""}
-          name="name"
-          type="text"
-          aria-label="name"
-          placeholder="Type your name..."
-        />
-        <label htmlFor="caption">Title</label>
-        <input
-          defaultValue={user.title || ""}
-          name="title"
-          type="text"
-          aria-label="title"
-          placeholder="Type your title..."
-        />
-        <label htmlFor="caption">Mail</label>
-        <input
-          defaultValue={user.mail || ""}
-          name="mail"
-          type="email"
-          aria-label="email"
-          placeholder="Type your email..."
-        />
-        <label htmlFor="image">Profile Image</label>
-        <input
-          name="image"
-          defaultValue={user.image || ""}
-          type="url"
-          onChange={e => setImage(e.target.value)}
-          placeholder="Paste an image URL..."
-        />
+        <Form id="profile-form" method="post">
+          <label htmlFor="caption">Name</label>
+          <input
+            defaultValue={user.name || ""}
+            name="name"
+            type="text"
+            aria-label="name"
+            placeholder="Type your name..."
+          />
+          <label htmlFor="caption">Title</label>
+          <input
+            defaultValue={user.title || ""}
+            name="title"
+            type="text"
+            aria-label="title"
+            placeholder="Type your title..."
+          />
+          <label htmlFor="caption">Mail</label>
+          <input
+            defaultValue={user.mail || ""}
+            name="mail"
+            type="email"
+            aria-label="email"
+            placeholder="Type your email..."
+          />
+          <label htmlFor="image">Profile Image</label>
+          <input
+            name="image"
+            defaultValue={user.image || ""}
+            type="url"
+            onChange={e => setImage(e.target.value)}
+            placeholder="Paste an image URL..."
+          />
 
-        <label htmlFor="image-preview">Image Preview</label>
-        <img
-          id="image-preview"
-          className="image-preview"
-          src={image || "https://placehold.co/600x400?text=Paste+an+image+URL"}
-          alt="Choose"
-          onError={e => {
-            const target = e.currentTarget as HTMLImageElement;
-            target.src = "https://placehold.co/600x400?text=Error+loading+image";
-          }}
-        />
+          <label htmlFor="image-preview">Image Preview</label>
+          <img
+            id="image-preview"
+            className="image-preview"
+            src={image || "https://placehold.co/600x400?text=Paste+an+image+URL"}
+            alt="Choose"
+            onError={e => {
+              const target = e.currentTarget as HTMLImageElement;
+              target.src = "https://placehold.co/600x400?text=Error+loading+image";
+            }}
+          />
 
-        <div className="btns">
-          <button>Save</button>
-        </div>
-      </Form>
+          <div className="btns">
+            <button>Save</button>
+          </div>
+        </Form>
 
-      <Form method="post" action="/auth/signout">
-        <div className="btns full">
-          <button className="btn-cancel">Sign Out</button>
-        </div>
-      </Form>
-    </div>
+        <Form method="post" action="/auth/signout">
+          <div className="btns full">
+            <button className="btn-cancel">Sign Out</button>
+          </div>
+        </Form>
+      </div>
+    </main>
   );
 }
 
