@@ -6,5 +6,5 @@ export default [
   route("posts/:id/update", "routes/post-update.tsx"),
   route("posts/:id/destroy", "routes/post-destroy.tsx"),
   route("add-post", "routes/post-add.tsx"),
-  route("/users", "routes/users.tsx")
+  route("users", "routes/users.tsx")
 ] satisfies RouteConfig;
