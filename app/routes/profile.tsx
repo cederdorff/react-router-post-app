@@ -1,9 +1,8 @@
+import { useState } from "react";
 import { Form, redirect } from "react-router";
 import User, { type UserType } from "~/models/User";
 import { authenticateUser } from "~/services/auth.server";
 import type { Route } from "./+types/profile";
-import { useState } from "react";
-import type { request } from "http";
 
 export async function loader({ request }: Route.LoaderArgs) {
   const authUser = await authenticateUser(request);
