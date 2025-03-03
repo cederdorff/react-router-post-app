@@ -12,7 +12,7 @@ export async function loader({ request }: Route.LoaderArgs) {
 
 export default function Profile({ loaderData }: { loaderData: { user: UserType } }) {
   const { user } = loaderData;
-  const [image, setImage] = useState(user.image || "https://placehold.co/600x400?text=Add+your+amazing+image");
+  const [image, setImage] = useState(user?.image || "https://placehold.co/600x400?text=Add+your+amazing+image");
 
   return (
     <main className="page">
@@ -22,7 +22,7 @@ export default function Profile({ loaderData }: { loaderData: { user: UserType }
         <Form id="profile-form" method="post">
           <label htmlFor="caption">Name</label>
           <input
-            defaultValue={user.name || ""}
+            defaultValue={user?.name || ""}
             name="name"
             type="text"
             aria-label="name"
@@ -30,7 +30,7 @@ export default function Profile({ loaderData }: { loaderData: { user: UserType }
           />
           <label htmlFor="caption">Title</label>
           <input
-            defaultValue={user.title || ""}
+            defaultValue={user?.title || ""}
             name="title"
             type="text"
             aria-label="title"
@@ -38,7 +38,7 @@ export default function Profile({ loaderData }: { loaderData: { user: UserType }
           />
           <label htmlFor="caption">Mail</label>
           <input
-            defaultValue={user.mail || ""}
+            defaultValue={user?.mail || ""}
             name="mail"
             type="email"
             aria-label="email"
@@ -47,7 +47,7 @@ export default function Profile({ loaderData }: { loaderData: { user: UserType }
           <label htmlFor="image">Profile Image</label>
           <input
             name="image"
-            defaultValue={user.image || ""}
+            defaultValue={user?.image || ""}
             type="url"
             onChange={e => setImage(e.target.value)}
             placeholder="Paste an image URL..."

@@ -19,7 +19,8 @@
     "react-router": "^7.1.5",
     "remix-auth": "^4.1.0",
     "remix-auth-form": "^3.0.0",
-    "remix-auth-github": "^3.0.2"
+    "remix-auth-github": "^3.0.2",
+    "remix-auth-oauth2": "^3.3.0"
   },
   "devDependencies": {
     "@react-router/dev": "^7.1.5",

@@ -12,6 +12,8 @@ export default [
   route("posts/:id/destroy", "routes/post-destroy.ts"),
   route("signin", "routes/signin.tsx"),
   route("auth/github/callback", "routes/auth/github-callback.ts"),
+  route("auth/google/callback", "routes/auth/google-callback.ts"),
   route("auth/github", "routes/auth/github.ts"),
+  route("auth/google", "routes/auth/google.ts"),
   route("auth/signout", "routes/auth/signout.ts")
 ] satisfies RouteConfig;

@@ -18,6 +18,11 @@ export default function SignIn() {
           <button>Sign In with GitHub</button>
         </div>
       </Form>
+      <Form id="sign-in-form" method="post" action="/auth/google">
+        <div className="btns full">
+          <button>Sign In with Google</button>
+        </div>
+      </Form>
     </div>
   );
 }

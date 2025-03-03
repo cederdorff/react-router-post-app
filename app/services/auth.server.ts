@@ -1,13 +1,15 @@
+import { redirect } from "react-router";
 import { Authenticator } from "remix-auth";
 import { GitHubStrategy } from "remix-auth-github";
+import { CodeChallengeMethod, OAuth2Strategy } from "remix-auth-oauth2";
 import User from "~/models/User";
 import { sessionStorage } from "./session.server";
-import { redirect } from "react-router";
 
 // Create an instance of the authenticator, pass a generic with what
 // strategies will return and will store in the session
-export let authenticator = new Authenticator<{ _id: string; accessToken: string; refreshToken: string | null }>();
+export let authenticator = new Authenticator<{ _id: string }>();
 
+//  ==================== GitHub ==================== //
 authenticator.use(
   new GitHubStrategy(
     {
@@ -17,12 +19,11 @@ authenticator.use(
     },
     async ({ tokens, request }) => {
       const gitHubUser = await getGitHubUser(tokens.accessToken());
-      const userId = await findOrCreateUser(gitHubUser);
+
+      const userId = await createOrGetUser(gitHubUser.name, gitHubUser.email, gitHubUser.avatar_url);
 
       return {
-        _id: userId,
-        accessToken: tokens.accessToken(),
-        refreshToken: tokens.hasRefreshToken() ? tokens.refreshToken() : null
+        _id: userId
       };
     }
   ),
@@ -32,9 +33,7 @@ authenticator.use(
 async function getGitHubUser(accessToken: string) {
   const response = await fetch("https://api.github.com/user", {
     headers: {
-      Accept: "application/vnd.github+json",
-      Authorization: `Bearer ${accessToken}`,
-      "X-GitHub-Api-Version": "2022-11-28"
+      Authorization: `Bearer ${accessToken}`
     }
   });
 
@@ -45,11 +44,48 @@ async function getGitHubUser(accessToken: string) {
   return response.json();
 }
 
-async function findOrCreateUser(gitHubUser: any) {
-  const { name, email, avatar_url } = gitHubUser;
-  let dbUser = await User.findOne({ mail: email }).lean();
+//  ==================== Google ==================== //
+authenticator.use(
+  new OAuth2Strategy(
+    {
+      clientId: process.env.GOOGLE_CLIENT_ID!,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
+      authorizationEndpoint: "https://accounts.google.com/o/oauth2/auth",
+      tokenEndpoint: "https://oauth2.googleapis.com/token",
+      redirectURI: process.env.GOOGLE_CALLBACK_URL!,
+      scopes: ["openid", "email", "profile"],
+      codeChallengeMethod: CodeChallengeMethod.S256 // Optional but recommended
+    },
+    async ({ tokens, request }) => {
+      const googleUser = await getGoogleUser(tokens.accessToken());
+
+      const userId = await createOrGetUser(googleUser.name, googleUser.email, googleUser.picture);
+
+      return {
+        _id: userId
+      };
+    }
+  ),
+  "google"
+);
+
+async function getGoogleUser(accessToken: string) {
+  const response = await fetch("https://www.googleapis.com/oauth2/v3/userinfo", {
+    headers: { Authorization: `Bearer ${accessToken}` }
+  });
+
+  if (!response.ok) {
+    throw new Error(`Google API Error: ${response.status} ${response.statusText}`);
+  }
+
+  return response.json();
+}
+
+// ==================== Helper functions ==================== //
+async function createOrGetUser(name: string, mail: string, image: string) {
+  let dbUser = await User.findOne({ mail }).lean();
   if (!dbUser) {
-    dbUser = await User.create({ name, mail: email, image: avatar_url });
+    dbUser = await User.create({ name, mail, image });
   }
   return dbUser._id.toString();
 }
