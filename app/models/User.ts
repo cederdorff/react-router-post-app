@@ -1,5 +1,5 @@
 import { Schema, Types, model, type InferSchemaType } from "mongoose";
-import bcrypt from "bcrypt";
+import bcrypt from "bcryptjs";
 
 // Define the schema for the User collection in MongoDB
 const userSchema = new Schema(

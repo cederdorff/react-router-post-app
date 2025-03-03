@@ -1,4 +1,4 @@
-import bcrypt from "bcrypt";
+import bcrypt from "bcryptjs";
 import { Authenticator } from "remix-auth";
 import { FormStrategy } from "remix-auth-form";
 import User from "~/models/User";
