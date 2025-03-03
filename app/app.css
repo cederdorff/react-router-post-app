@@ -160,6 +160,10 @@ form {
   width: 35rem;
 }
 
+#profile-form {
+  margin: 0 0 2em;
+}
+
 /* ---------- Button Group ---------- */
 .btns {
   display: flex;

@@ -18,7 +18,7 @@ export default function Profile({ loaderData }: { loaderData: { user: UserType }
     <div className="page">
       <h1>Profile</h1>
 
-      <Form id="post-form" method="post">
+      <Form id="profile-form" method="post">
         <label htmlFor="caption">Name</label>
         <input
           defaultValue={user.name || ""}
