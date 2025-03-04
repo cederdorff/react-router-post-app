@@ -44,8 +44,6 @@ export default function PostsPage({
 }: {
   loaderData: { posts: PostType[]; tags: string[]; q: string; sortBy: string; filterTag: string };
 }) {
-  console.log(loaderData);
-
   const { posts, tags, q, sortBy, filterTag } = loaderData;
   const submit = useSubmit();
 
