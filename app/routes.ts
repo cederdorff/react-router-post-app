@@ -15,5 +15,6 @@ export default [
   route("auth/google/callback", "routes/auth/google-callback.ts"),
   route("auth/github", "routes/auth/github.ts"),
   route("auth/google", "routes/auth/google.ts"),
-  route("auth/signout", "routes/auth/signout.ts")
+  route("auth/signout", "routes/auth/signout.ts"),
+  route("auth/email-pass", "routes/auth/email-pass.ts")
 ] satisfies RouteConfig;
