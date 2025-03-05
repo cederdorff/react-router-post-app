@@ -155,7 +155,7 @@ form {
   border-radius: 8px;
 }
 
-.signin-form-container {
+.oauth-form-container {
   display: grid;
   grid-template-columns: 1fr 1fr;
   box-shadow: 1px 1px 8px rgba(0, 0, 0, 0.25);
@@ -165,7 +165,7 @@ form {
   width: 35rem;
 }
 
-.signin-form-container form {
+.oauth-form-container form {
   box-shadow: none;
   padding: 0.5em;
 }

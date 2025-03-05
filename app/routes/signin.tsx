@@ -39,7 +39,7 @@ export default function SignIn({ actionData }: Route.ComponentProps) {
       </Form>
 
       <p>Or sign in with your GitHub or Google account.</p>
-      <div className="signin-form-container">
+      <div className="oauth-form-container">
         <Form method="post" action="/auth/github">
           <div className="btns full">
             <button>Sign In with GitHub</button>
