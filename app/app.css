@@ -156,15 +156,22 @@ form {
 }
 
 .signin-form-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
   box-shadow: 1px 1px 8px rgba(0, 0, 0, 0.25);
   padding: 1.5em;
   background-color: var(--white);
   border-radius: 8px;
+  width: 35rem;
 }
 
 .signin-form-container form {
   box-shadow: none;
-  padding: 1em;
+  padding: 0.5em;
+}
+
+#sign-in-form {
+  margin: 0 0 2em;
 }
 
 #sign-in-form,
