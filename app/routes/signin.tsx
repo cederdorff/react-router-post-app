@@ -1,5 +1,5 @@
-import { Form, redirect } from "react-router";
-import { getAuthUser } from "~/services/auth.server";
+import { data, Form, redirect } from "react-router";
+import { authenticator, getAuthUser } from "~/services/auth.server";
 import type { Route } from "./+types/signin";
 
 export async function loader({ request }: Route.LoaderArgs) {
@@ -53,4 +53,24 @@ export default function SignIn({ actionData }: Route.ComponentProps) {
       </div>
     </div>
   );
+}
+
+// We need to export an action function, here we will use the
+// `authenticator.authenticate method`
+export async function action({ request }: Route.ActionArgs) {
+  try {
+    // we call the method with the name of the strategy we want to use and the
+    // request object
+    let userId = await authenticator.authenticate("user-pass", request);
+    let session = await sessionStorage.getSession(request.headers.get("cookie"));
+    session.set("authUserId", userId);
+    return redirect("/", {
+      headers: { "Set-Cookie": await sessionStorage.commitSession(session) }
+    });
+  } catch (error) {
+    if (error instanceof Error) {
+      // here the error related to the authentication process
+      return data({ error: error.message });
+    }
+  }
 }
