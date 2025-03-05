@@ -4,6 +4,8 @@ import { GitHubStrategy } from "remix-auth-github";
 import { CodeChallengeMethod, OAuth2Strategy } from "remix-auth-oauth2";
 import User from "~/models/User";
 import { sessionStorage } from "./session.server";
+import { FormStrategy } from "remix-auth-form";
+import bcrypt from "bcryptjs";
 
 // ==================== Authenticator Setup ==================== //
 // Create a new instance of the Authenticator
@@ -50,6 +52,48 @@ authenticator.use(
   ),
   "google"
 );
+
+// ==================== Form Authentication ==================== //
+
+authenticator.use(
+  new FormStrategy(async ({ form }) => {
+    const mail = form.get("mail");
+    const password = form.get("password");
+
+    // do some validation, errors are saved in the sessionErrorKey
+    if (!mail || typeof mail !== "string" || !mail.trim()) {
+      throw new Error("Email is required and must be a string");
+    }
+
+    if (!password || typeof password !== "string" || !password.trim()) {
+      throw new Error("Password is required and must be a string");
+    }
+
+    // verify the user
+    const userId = await verifyUser(mail, password);
+    return { _id: userId };
+  }),
+  "email-pass"
+);
+
+async function verifyUser(mail: string, password: string) {
+  const user = await User.findOne({ mail }).select("+password");
+  if (!user) {
+    throw new Error("No user found with this email.");
+    // throw new AuthorizationError("No user found with this email.");
+  }
+
+  if (!user.password) {
+    throw new Error("User password is undefined.");
+  }
+  const passwordMatch = await bcrypt.compare(password, user.password);
+  if (!passwordMatch) {
+    throw new Error("Invalid password.");
+  }
+
+  // return the user id to be stored in the session
+  return user._id.toString();
+}
 
 // ==================== Helper Functions ==================== //
 
