@@ -13,7 +13,7 @@ export default function SignIn() {
   return (
     <div id="sign-in-page" className="page">
       <h1>Sign In</h1>
-      <p>Or sign in with your GitHub or Google account.</p>
+      <p>Sign in with your GitHub or Google account.</p>
       <div className="oauth-form-container">
         <Form method="post" action="/auth/github">
           <div className="btns full">
