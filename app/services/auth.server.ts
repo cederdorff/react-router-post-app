@@ -80,7 +80,6 @@ async function verifyUser(mail: string, password: string) {
   const user = await User.findOne({ mail }).select("+password");
   if (!user) {
     throw new Error("No user found with this email.");
-    // throw new AuthorizationError("No user found with this email.");
   }
 
   if (!user.password) {
