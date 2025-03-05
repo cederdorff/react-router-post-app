@@ -43,6 +43,7 @@ export default function Profile({ loaderData }: { loaderData: { user: UserType }
             type="email"
             aria-label="email"
             placeholder="Type your email..."
+            disabled
           />
           <label htmlFor="image">Profile Image</label>
           <input
@@ -89,7 +90,6 @@ export async function action({ request }: Route.ActionArgs) {
   await User.findByIdAndUpdate(authUser._id, {
     name: formData.get("name"),
     title: formData.get("title"),
-    mail: formData.get("mail"),
     image: formData.get("image")
   });
   return redirect("/profile");
