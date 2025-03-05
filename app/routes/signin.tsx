@@ -1,4 +1,4 @@
-import { data, Form, redirect } from "react-router";
+import { data, Form, NavLink, redirect } from "react-router";
 import { authenticator, getAuthUser } from "~/services/auth.server";
 import type { Route } from "./+types/signin";
 import { sessionStorage } from "~/services/session.server";
@@ -38,6 +38,9 @@ export default function SignIn({ actionData }: Route.ComponentProps) {
           </div>
         ) : null}
       </Form>
+      <p>
+        No account? <NavLink to="/signup">Sign up here</NavLink>.
+      </p>
 
       <p>Or sign in with your GitHub or Google account.</p>
       <div className="oauth-form-container">
