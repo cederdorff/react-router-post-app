@@ -84,8 +84,9 @@ async function verifyUser(mail: string, password: string) {
   }
 
   if (!user.password) {
-    throw new Error("User password is undefined.");
+    throw new Error("This email is associated with an OAuth account. Please sign in with GitHub or Google.");
   }
+
   const passwordMatch = await bcrypt.compare(password, user.password);
   if (!passwordMatch) {
     throw new Error("Invalid password.");
